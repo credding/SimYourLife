@@ -62,6 +62,9 @@ h1 {
 	background: #80D2ED;
 	cursor: pointer;
 }
+#body a {
+	text-decoration: none;
+}
 #body div {
 	margin: 0px;
 	padding: 0px;
