@@ -1,5 +1,5 @@
-var canvas = document.getElementById("gameCanvas");
-var context = canvas.getContext("2d");
+var canvas = document.getElementById('gameCanvas');
+var context = canvas.getContext('2d');
 
 var width = canvas.width;
 var height = canvas.height;
@@ -11,7 +11,10 @@ var destX = 0;
 var destY = 0;
 var pSpeed = 500;		// Player speed (pixels per second)
 
-draw();
+var grass = new Image();
+grass.src = 'img/grass.png';
+var player = new Image();
+player.src = 'img/guy.png';
 
 canvas.addEventListener('click', function() {
 	destX = event.offsetX;
@@ -19,8 +22,10 @@ canvas.addEventListener('click', function() {
 	movePlayer(destX,destY);
 }, false);
 
+setInterval(draw,40);
+
 function draw() {
-//	drawScene();
+	drawScene();
 	drawPlayer();
 	drawBar();
 }
@@ -34,29 +39,22 @@ function drawScene() {
 		  break;
 		// Add cases as needed
 		default:
-		  var grass = new Image();
-		  grass.src = "img/grass.png";
-		  grass.onload = function() {
-			  var pattern = context.createPattern(grass, 'repeat');
-			  context.fillStyle = pattern;
-			  context.fillRect(0,0,width,height);
-		  }
+		  var pattern = context.createPattern(grass, 'repeat');
+		  context.fillStyle = pattern;
+		  context.fillRect(0,0,width,height);
 	}
-	console.log("Scene Drawn");
 }
 
 function drawPlayer() {
-	var guy = new Image();
-	guy.src = "img/guy.png";
-	guy.onload = function() {
-		context.drawImage(guy, pPosX - 25, pPosY - 25, 50, 50);
-	}
+	context.drawImage(player, pPosX - 25, pPosY - 25, 50, 50);
 }
 
 function drawBar() {
-	context.fillStyle = "#282828";
-	context.fillRect(0,0,900,35);
-	console.log("Bar Drawn");
+	context.fillStyle = '#282828';
+	context.fillRect(0,0,width,35);
+	context.fillStyle = '#ffffff';
+	context.font='20px Basic Title Font';
+	context.fillText('Life:               Energy:               Money:               Time:',15,24);
 }
 
 function movePlayer(x,y) {
@@ -69,7 +67,6 @@ function movePlayer(x,y) {
 		pPosX += xMove;
 		pPosY += yMove;
 		setTimeout(function() {
-			draw();
 			movePlayer(destX,destY);
 		}, 40);
 	}
