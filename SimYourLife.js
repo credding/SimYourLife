@@ -1,36 +1,42 @@
-var c=document.getElementById("sylGame");
-var ctx=c.getContext("2d");
+function initialise() {
+	var canvas=document.getElementById("gameCanvas");
+	var context=canvas.getContext("2d");
 
-var sceneNum=0;
-var pPosX=400;
-var pPosY=200;
+	var width=canvas.width;
+	var height=canvas.height;
 
-setInterval(draw(),40)
+	var sceneNum=0;
+	var pPosX=width/2;
+	var pPosY=height/2;
 
-canvas.addEventListener('click',function() {},false);
+	canvas.addEventListener('mousedown',movePlayer(),false);
+
+	draw();
+}
 
 function draw() {
-	ctx.clearRect(0,0,800,400);
 	drawScene();
 	drawPlayer();
 }
 
 function drawScene() {
-	if (sceneNum==0) {
-		ctx.fillStyle="#69B32D";
-		ctx.fillRect(0,0,800,400);
-	}
+	context.clearRect(0,0,width,height);
+	context.fillStyle="#539c05";
+	context.fillRect(0,0,width,height);
 }
 
 function drawPlayer() {
-	var player_fill=ctx.createRadialGradient(pPosX,pPosY,0,pPosX,pPosY,10);
+	var player_fill=context.createRadialGradient(pPosX,pPosY,0,pPosX,pPosY,10);
 	player_fill.addColorStop(0,"#EDD6CA");
 	player_fill.addColorStop(1,"#F5A77D");
-	ctx.fillStyle=player_fill;
-	ctx.beginPath();
-	ctx.arc(pPosX,pPosY,10,0,2*Math.PI,true);
-	ctx.closePath();
-	ctx.fill();
-	ctx.stroke();
+	context.fillStyle=player_fill;
+	context.beginPath();
+	context.arc(pPosX,pPosY,10,0,2*Math.PI,true);
+	context.closePath();
+	context.fill();
+	context.stroke();
 }
 
+function movePlayer(event) {
+
+}

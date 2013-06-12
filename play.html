@@ -5,15 +5,18 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-	<h1>Sim Your Life</h1>
+<div id="wrapper">
+	<div class="space"></div>
+	<a href="index.html"><h1>SIMYOURLIFE</h1></a>
 	<div id="nav">
-		<a href="index.html"><div>Home</div></a>
-		<a href="play.html" class="cur"><div class="cur">Play</div></a>
-    <!-- <a href="#"><div>Sign Up!</div></a> -->
+		<a href="index.html">Home</a>&nbsp;&nbsp;<a href="play.html" class="cur">Play</a>
 	</div>
 	<div id="body">
-		<canvas id="sylGame" width="800" height="400" style="border: 2px solid #000000;">
-		</canvas>
-		<script type="text/javascript" src="SimYourLife.js"></script>
+		<canvas id="gameCanvas" width="900" height="500" style="border: 2px solid #282828;">Your browser does not support canvas. Please upgrade your browser.</canvas>
+		<script type="text/javascript" src="gameScript.js"></script>
 	</div>
+	<div id="foot">
+		<p>Copyright &copy; 2013 SimYourLife. All Rights Reserved.</p>
+	</div>
+</div>
 </body>
