@@ -9,7 +9,7 @@ var pPosX = width/2;	// Initial player position
 var pPosY = height/2;	// Initial player position
 var destX = 0;
 var destY = 0;
-var pSpeed = 1000;		// Player speed (pixels per second)
+var pSpeed = 500;		// Player speed (pixels per second)
 
 draw();
 
@@ -20,8 +20,9 @@ canvas.addEventListener('click', function() {
 }, false);
 
 function draw() {
-	drawScene();
+//	drawScene();
 	drawPlayer();
+	drawBar();
 }
 
 function drawScene() {
@@ -37,11 +38,11 @@ function drawScene() {
 		  grass.src = "img/grass.png";
 		  grass.onload = function() {
 			  var pattern = context.createPattern(grass, 'repeat');
-			  context.rect(0, 0, width, height);
 			  context.fillStyle = pattern;
-			  context.fill();
+			  context.fillRect(0,0,width,height);
 		  }
 	}
+	console.log("Scene Drawn");
 }
 
 function drawPlayer() {
@@ -50,6 +51,12 @@ function drawPlayer() {
 	guy.onload = function() {
 		context.drawImage(guy, pPosX - 25, pPosY - 25, 50, 50);
 	}
+}
+
+function drawBar() {
+	context.fillStyle = "#282828";
+	context.fillRect(0,0,900,35);
+	console.log("Bar Drawn");
 }
 
 function movePlayer(x,y) {
