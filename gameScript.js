@@ -25,7 +25,6 @@ function draw() {
 }
 
 function drawScene() {
-	context.clearRect(0, 0, width, height);
 	// Draw a different scene based on sceneNum
 	switch(sceneNum) {
 		case 1:
