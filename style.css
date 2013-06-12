@@ -3,7 +3,7 @@
 	font-family: 'Basic Title Font';
 	font-style: normal;
 	font-weight: 200;
-	src: url(font/basictitlefont.ttf);
+	src: url(font/basictitlefont.woff);
 }
 
 * {
@@ -42,8 +42,9 @@ h1 {
 	font-family: 'Basic Title Font', sans-serif;
 	font-size: 60px;
 	text-align: center;
-	font-weight: normal;
+	font-weight: 200;
 	color: #ffffff;
+	text-transform: uppercase;
 	background: #539c05;
 }
 
@@ -84,7 +85,7 @@ a:hover {
 	width: 900px;
 	font-size: 40px;
 }
-#body p.button, #body p.button a {
+#body .button {
 	margin: 0px auto;
 	padding: 5px 0px 10px;
 	width: 400px;
@@ -95,7 +96,7 @@ a:hover {
 	text-align: center;
 	background: #539c05;
 }
-#body p.button:hover, #body p.button:hover a {
+#body .button:hover {
 	background: #bdbdbd;
 	cursor: pointer;
 }
