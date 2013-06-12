@@ -54,7 +54,8 @@ function drawBar() {
 	context.fillRect(0,0,width,35);
 	context.fillStyle = '#ffffff';
 	context.font='20px Basic Title Font';
-	context.fillText('Life:               Energy:               Money:               Time:',15,24);
+	context.fillText('LifePoints:', 15, 24);
+	context.fillText('Money: $', 315, 24);
 }
 
 function movePlayer(x,y) {
