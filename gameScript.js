@@ -43,8 +43,8 @@ var mClickY; 		// Mouse Click Position
 
 function initialize() {
 	// Parameter variables
-	window.predisp = 1;		// Previous screen ID
-	window.disp = 0;		// Current screen ID
+	window.state = 0;		// Current game state
+	window.prestate = 1;	// Previous game state
 
 	window.pPosX = 530;		// Initial player position
 	window.pPosY = 300;		// Initial player position
@@ -61,81 +61,75 @@ function initialize() {
 
 initialize();
 
-setInterval(draw,40);
+setInterval(tick,40);
 
-function draw() {
-	base();
-	switch(disp) {
+function tick() {
+	bar();
+	switch(state) {
+		case 0:
+		  scene();
+		  shade();
+		  drawPause();
+		  break;
 		case 1:
-		dispMain();
-		break;
+		  age();
+		  pauseButton();
+		  scene();
+		  drawMain();
+		  break;
 		case 2:
-		dispSchool();
-		break;
+		  age();
+		  pauseButton();
+		  scene();
+		  shade();
+		  drawSchool();
+		  break;
 		case 3:
-		dispCollege();
-		break;
+		  age();
+		  pauseButton();
+		  scene();
+		  shade();
+		  drawCollege();
+		  break;
 		case 4:
-		dispUniversity();
-		break;
-		default:
-		dispPause();
-	}
-}
-
-function data() {
-	switch(disp) {
-		case 2:
-		dataSchool();
-		break;
-		case 3:
-		dataCollege();
-		break;
-		case 4:
-		dataUniversity();
-		break;
+		  age();
+		  pauseButton();
+		  scene();
+		  shade();
+		  drawUniversity();
+		  break;
 	}
 }
 
 // Screens
-function dispPause() {
+function drawPause() {
 	gameCanvas.style.cursor = 'default';
-	shade();
-	if (250 <= mPosX && mPosX <= 650 && 195 <= mPosY && mPosY <= 240) {
+	context.fillStyle = '#539c05';
+	if (250 <= mPosX && mPosX <= 650 && 195 <= mPosY && mPosY <= 240)
 		context.fillStyle = '#bdbdbd';
-	}
-	else {
-		context.fillStyle = '#539c05';
-	}
 	context.fillRect(250, 195, 400, 45);
-	context.fillStyle = '#ffffff';
-	context.font = '30px Basic Title Font';
-	context.fillText('Play', 424, 228);
-	if (250 <= mPosX && mPosX <= 650 && 250 <= mPosY && mPosY <= 295) {
+	context.fillStyle = '#539c05';
+	if (250 <= mPosX && mPosX <= 650 && 250 <= mPosY && mPosY <= 295)
 		context.fillStyle = '#bdbdbd';
-	}
-	else {
-		context.fillStyle = '#539c05';
-	}
 	context.fillRect(250, 250, 400, 45);
 	context.fillStyle = '#ffffff';
 	context.font = '30px Basic Title Font';
+	context.fillText('Play', 424, 228);
 	context.fillText('Restart', 404, 283);
 	if (250 <= mClickX && mClickX <= 650 && 195 <= mClickY && mClickY <= 240) {
-		disp = predisp;
+		state = prestate;
 		mClickX = '';
 		mClickY = '';
 	}
 	if (250 <= mClickX && mClickX <= 650 && 250 <= mClickY && mClickY <= 295) {
 		initialize();
-		disp = predisp;
+		state = prestate;
 		mClickX = '';
 		mClickY = '';
 	}
 }
-function dispMain() {
-	age();
-	pauseButton();
+
+function drawMain() {
 	// Move Player
 	if (Math.abs(pPosX - destX) > pSpeed / 25 || Math.abs(pPosY - destY) > pSpeed / 25) {
 		var xDistance = destX - pPosX;
@@ -146,6 +140,7 @@ function dispMain() {
 		pPosX += xMove;
 		pPosY += yMove;
 	}
+
 	// Draw Tips
 	if (20 <= mPosX && mPosX <= 170 && 55 <= mPosY && mPosY <= 155) {
 		context.fillStyle = '#282828';
@@ -175,44 +170,45 @@ function dispMain() {
 		context.font = '15px Noto Sans';
 		context.fillText('Go to Work', mPosX -90, mPosY + 20);
 	}
+
 	// Handle Clicks
 	if (0 <= mClickX && mClickX <= 900 && 35 <= mClickY && mClickY <= 500) {
 		if (20 <= mClickX && mClickX <= 170 && 55 <= mClickY && mClickY <= 155) {
 			destX = mClickX;
 			destY = mClickY;
 			if (20 <= pPosX && pPosX <= 170 && 55 <= pPosY && pPosY <= 155) {
-				disp = 2;
-				data();
+				startSchool();
+				state = 2;
 				mClickX = '';
 				mClickY = '';
 			}
 		}
 		else if (20 <= mClickX && mClickX <= 170 && 175 <= mClickY && mClickY <= 275) {
-			if (20 <= mClickX && mClickX <= 170 && 175 <= mClickY && mClickY <= 275) {
-				destX = mClickX;
-				destY = mClickY;
-				if (20 <= pPosX && pPosX <= 170 && 175 <= pPosY && pPosY <= 275) {
-					disp = 3;
-					data();
-					mClickX = '';
-					mClickY = '';
-				}
+			destX = mClickX;
+			destY = mClickY;
+			if (20 <= pPosX && pPosX <= 170 && 175 <= pPosY && pPosY <= 275) {
+				startCollege();
+				state = 3;
+				mClickX = '';
+				mClickY = '';
 			}
 		}
 		else if (20 <= mClickX && mClickX <= 170 && 295 <= mClickY && mClickY <= 395) {
-			if (20 <= mClickX && mClickX <= 170 && 295 <= mClickY && mClickY <= 395) {
-				destX = mClickX;
-				destY = mClickY;
-				if (20 <= pPosX && pPosX <= 170 && 295 <= pPosY && pPosY <= 395) {
-					disp = 4;
-					data();
-					mClickX = '';
-					mClickY = '';
-				}
+			destX = mClickX;
+			destY = mClickY;
+			if (20 <= pPosX && pPosX <= 170 && 295 <= pPosY && pPosY <= 395) {
+				startUniversity();
+				state = 4;
+				mClickX = '';
+				mClickY = '';
 			}
 		}
 		else if (750 <= mClickX && mClickX <= 850 && 100 <= mClickY && mClickY <= 300) {
+			destX = mClickX;
+			destY = mClickY;
+			if (750 <= pPosX && pPosX <= 850 && 100 <= pPosY && pPosY <= 300) {
 
+			}
 		}
 		else {
 			destX = mClickX;
@@ -222,273 +218,483 @@ function dispMain() {
 		}
 	}
 }
-function dispSchool() {
-	age();
-	pauseButton();
-	shade();
-	context.fillStyle = '#282828';
-	context.fillRect(200, 100, 500, 300);
-	Data();
-	if (490 <= mPosX && mPosX <= 690 && 345 <= mPosY && mPosY <= 390) {
-		context.fillStyle = '#ffffff';
-	}
+
+School = new Object();
+
+function startSchool() {
+	if (Math.floor(pAge) > 20)
+		School.canGo = false;
 	else
-		context.fillStyle = '#bdbdbd';
-	context.font = '30px Basic Title Font';
-	context.fillText('Return', 580, 378);
-	if (490 <= mClickX && mClickX <= 690 && 345 <= mClickY && mClickY <= 390) {
-		disp = 1;
-		mClickX = '';
-		mClickY = '';
-		destX = 530;
-		destY = 300;
-	}
-}
-function dispCollege() {
-	age();
-	pauseButton();
-	shade();
-	context.fillStyle = '#282828';
-	context.fillRect(200, 100, 500, 300);
-	Data();
-	if (490 <= mPosX && mPosX <= 690 && 345 <= mPosY && mPosY <= 390) {
+		School.canGo = true;
+	School.numDone = 0;
+	School.numCorrect = 0;
+
+	num1 = new Array();
+	num2 = new Array();
+	opt0 = new Array();
+	opt1 = new Array();
+	opt2 = new Array();
+	opt3 = new Array();
+	School.ansPos = new Array();
+
+	School.prob = function() {
 		context.fillStyle = '#ffffff';
+		context.font = '30px Noto Sans';
+		context.fillText(num1[School.numDone] + ' + ' + num2[School.numDone] + ' =', 220, 175);
+		if (240 <= mPosX && mPosX <= 390 && 190 <= mPosY && mPosY <= 220)
+			context.fillStyle = '#ffffff';
+		else
+			context.fillStyle = '#bdbdbd';
+		context.fillText('a. ' + opt0[School.numDone], 240, 220);
+		if (240 <= mPosX && mPosX <= 390 && 230 <= mPosY && mPosY <= 260)
+			context.fillStyle = '#ffffff';
+		else
+			context.fillStyle = '#bdbdbd';
+		context.fillText('b. ' + opt1[School.numDone], 240, 260);
+		if (240 <= mPosX && mPosX <= 390 && 270 <= mPosY && mPosY <= 300)
+			context.fillStyle = '#ffffff';
+		else
+			context.fillStyle = '#bdbdbd';
+		context.fillText('c. ' + opt2[School.numDone], 240, 300);
+		if (240 <= mPosX && mPosX <= 390 && 310 <= mPosY && mPosY <= 340)
+			context.fillStyle = '#ffffff';
+		else
+			context.fillStyle = '#bdbdbd';
+		context.fillText('d. ' + opt3[School.numDone], 240, 340);
+		if (240 <= mClickX && mClickX <= 390 && 190 <= mClickY && mClickY <= 220) {
+			if (School.ansPos[School.numDone] == 0)
+				School.numCorrect++;
+			School.numDone++;
+			mClickX = '';
+			mClickY = '';
+		}
+		if (240 <= mClickX && mClickX <= 390 && 230 <= mClickY && mClickY <= 260) {
+			if (School.ansPos[School.numDone] == 1)
+				School.numCorrect++;
+			School.numDone++;
+			mClickX = '';
+			mClickY = '';
+		}
+		if (240 <= mClickX && mClickX <= 390 && 270 <= mClickY && mClickY <= 300) {
+			if (School.ansPos[School.numDone] == 2)
+				School.numCorrect++;
+			School.numDone++;
+			mClickX = '';
+			mClickY = '';
+		}
+		if (240 <= mClickX && mClickX <= 390 && 310 <= mClickY && mClickY <= 340) {
+			if (School.ansPos[School.numDone] == 3)
+				School.numCorrect++;
+			School.numDone++;
+			mClickX = '';
+			mClickY = '';
+		}
 	}
-	else
-		context.fillStyle = '#bdbdbd';
-	context.font = '30px Basic Title Font';
-	context.fillText('Return', 580, 378);
-	if (490 <= mClickX && mClickX <= 690 && 345 <= mClickY && mClickY <= 390) {
-		disp = 1;
-		mClickX = '';
-		mClickY = '';
-		destX = 530;
-		destY = 300;
-	}
-}
-function dispUniversity() {
-	age();
-	pauseButton();
-	shade();
-	context.fillStyle = '#282828';
-	context.fillRect(200, 100, 500, 300);
-	Data();
-	if (490 <= mPosX && mPosX <= 690 && 345 <= mPosY && mPosY <= 390) {
-		context.fillStyle = '#ffffff';
-	}
-	else
-		context.fillStyle = '#bdbdbd';
-	context.font = '30px Basic Title Font';
-	context.fillText('Return', 580, 378);
-	if (490 <= mClickX && mClickX <= 690 && 345 <= mClickY && mClickY <= 390) {
-		disp = 1;
-		mClickX = '';
-		mClickY = '';
-		destX = 530;
-		destY = 300;
+
+	for (var i = 0; i < 10; i++) {
+		num1[i] = Math.floor(Math.random() * 10);
+		num2[i] = Math.floor(Math.random() * 10);
+		ans = num1[i] + num2[i];
+		if (Math.random() < .5)
+			ans1 = ans - (Math.floor(Math.random() * 3) + 1);
+		else
+			ans1 = ans + (Math.floor(Math.random() * 3) + 1);
+		if (Math.random() < .5)
+			ans2 = ans - (Math.floor(Math.random() * 3) + 4);
+		else
+			ans2 = ans + (Math.floor(Math.random() * 3) + 4);
+		if (Math.random() < .5)
+			ans3 = ans - (Math.floor(Math.random() * 3) + 7);
+		else
+			ans3 = ans + (Math.floor(Math.random() * 3) + 7);
+		School.ansPos[i] = Math.floor(Math.random() * 4)
+		switch (School.ansPos[i]) {
+			case 0:
+			  opt0[i] = ans;
+			  opt1[i] = ans1;
+			  opt2[i] = ans2;
+			  opt3[i] = ans3;
+			  break;
+			case 1:
+			  opt0[i] = ans1;
+			  opt1[i] = ans;
+			  opt2[i] = ans2;
+			  opt3[i] = ans3;
+			  break;
+			case 2:
+			  opt0[i] = ans1;
+			  opt1[i] = ans2;
+			  opt2[i] = ans;
+			  opt3[i] = ans3;
+			  break;
+			case 3:
+			  opt0[i] = ans1;
+			  opt1[i] = ans2;
+			  opt2[i] = ans3;
+			  opt3[i] = ans;
+			  break;
+		}
 	}
 }
 
-// Data Operations
-function Data() {}
-
-function dataSchool() {
-	var numDone = 0;
-	var numCorrect = 0;
-	randProblem();
-	Data = function() {
+function drawSchool() {
+	context.fillStyle = '#282828';
+	context.fillRect(200, 100, 500, 300);
+	if (490 <= mPosX && mPosX <= 690 && 345 <= mPosY && mPosY <= 390)
 		context.fillStyle = '#ffffff';
-		context.font = '15px Noto Sans';
+	else
+		context.fillStyle = '#bdbdbd';
+	context.font = '30px Basic Title Font';
+	context.fillText('Return', 580, 378);
+	if (490 <= mClickX && mClickX <= 690 && 345 <= mClickY && mClickY <= 390) {
+		state = 1;
+		mClickX = '';
+		mClickY = '';
+		destX = 530;
+		destY = 300;
+	}
+	context.fillStyle = '#ffffff';
+	context.font = '15px Noto Sans';
+	if (School.canGo == false)
+		context.fillText('Sorry, you are too old to go to High School.', 220, 135);
+	else {
 		context.fillText('Complete 10 problems to receive up to 7000 LifePoints.', 220, 135);
-		context.font = '30px Noto Sans';
-		context.fillText(exp, 220, 185);
-		context.fillStyle = '#bdbdbd';
-		context.font = '25px Noto Sans';
-		switch(ansPos) {
-			case 1:
-			  context.fillText('a. ' + ans, 230, 220);
-			  context.fillText('b. ' + ans1, 230, 255);
-			  context.fillText('c. ' + ans2, 230, 290);
-			  context.fillText('d. ' + ans3, 230, 325);
-			  break;
-			case 2:
-			  context.fillText('a. ' + ans1, 230, 220);
-			  context.fillText('b. ' + ans, 230, 255);
-			  context.fillText('c. ' + ans2, 230, 290);
-			  context.fillText('d. ' + ans3, 230, 325);
-			  break;
-			case 3:
-			  context.fillText('a. ' + ans1, 230, 220);
-			  context.fillText('b. ' + ans2, 230, 255);
-			  context.fillText('c. ' + ans, 230, 290);
-			  context.fillText('d. ' + ans3, 230, 325);
-			  break;
-			case 4:
-			  context.fillText('a. ' + ans1, 230, 220);
-			  context.fillText('b. ' + ans2, 230, 255);
-			  context.fillText('c. ' + ans3, 230, 290);
-			  context.fillText('d. ' + ans, 230, 325);
-			  break;
-		}
-	}
-	function randProblem() {
-		num1 = Math.floor(Math.random() * 10);
-		num2 = Math.floor(Math.random() * 10);
-		ans = num1 + num2;
-		exp = num1 + ' + ' + num2 + ' =';
-		if (Math.random() < .5)
-			ans1 = ans - (Math.floor(Math.random() * 10) + 1);
-		else
-			ans1 = ans + (Math.floor(Math.random() * 10) + 1);
-		if (Math.random() < .5)
-			ans2 = ans - (Math.floor(Math.random() * 10) + 1);
-		else
-			ans2 = ans + (Math.floor(Math.random() * 10) + 1);
-		if (Math.random() < .5)
-			ans3 = ans - (Math.floor(Math.random() * 10) + 1);
-		else
-			ans3 = ans + (Math.floor(Math.random() * 10) + 1);
-		ansPos = Math.floor(Math.random() * 4) + 1;
-	}
-}
-function dataCollege() {
-	var numDone = 0;
-	var numCorrect = 0;
-	randProblem();
-	Data = function() {
-		context.fillStyle = '#ffffff';
-		context.font = '15px Noto Sans';
-		context.fillText('Complete 10 problems to receive up to 14000 LifePoints.', 220, 135);
-		context.font = '30px Noto Sans';
-		context.fillText(exp, 220, 185);
-		context.fillStyle = '#bdbdbd';
-		context.font = '25px Noto Sans';
-		switch(ansPos) {
-			case 1:
-			  context.fillText('a. ' + ans, 230, 220);
-			  context.fillText('b. ' + ans1, 230, 255);
-			  context.fillText('c. ' + ans2, 230, 290);
-			  context.fillText('d. ' + ans3, 230, 325);
-			  break;
-			case 2:
-			  context.fillText('a. ' + ans1, 230, 220);
-			  context.fillText('b. ' + ans, 230, 255);
-			  context.fillText('c. ' + ans2, 230, 290);
-			  context.fillText('d. ' + ans3, 230, 325);
-			  break;
-			case 3:
-			  context.fillText('a. ' + ans1, 230, 220);
-			  context.fillText('b. ' + ans2, 230, 255);
-			  context.fillText('c. ' + ans, 230, 290);
-			  context.fillText('d. ' + ans3, 230, 325);
-			  break;
-			case 4:
-			  context.fillText('a. ' + ans1, 230, 220);
-			  context.fillText('b. ' + ans2, 230, 255);
-			  context.fillText('c. ' + ans3, 230, 290);
-			  context.fillText('d. ' + ans, 230, 325);
-			  break;
-		}
-	}
-	function randProblem() {
-		num1 = Math.floor(Math.random() * 10);
-		num2 = Math.floor(Math.random() * 10);
-		ans = num1 * num2;
-		exp = num1 + ' x ' + num2 + ' =';
-		if (Math.random() < .5)
-			ans1 = ans - (Math.floor(Math.random() * 10) + 1);
-		else
-			ans1 = ans + (Math.floor(Math.random() * 10) + 1);
-		if (Math.random() < .5)
-			ans2 = ans - (Math.floor(Math.random() * 10) + 1);
-		else
-			ans2 = ans + (Math.floor(Math.random() * 10) + 1);
-		if (Math.random() < .5)
-			ans3 = ans - (Math.floor(Math.random() * 10) + 1);
-		else
-			ans3 = ans + (Math.floor(Math.random() * 10) + 1);
-		ansPos = Math.floor(Math.random() * 4) + 1;
-	}
-}
-function dataUniversity() {
-	var numDone = 0;
-	var numCorrect = 0;
-	randProblem();
-	Data = function() {
-		context.fillStyle = '#ffffff';
-		context.font = '15px Noto Sans';
-		context.fillText('Complete 10 problems to receive up to 14000 LifePoints.', 220, 135);
-		context.font = '30px Noto Sans';
-		context.fillText(exp, 220, 185);
-		context.fillStyle = '#bdbdbd';
-		context.font = '25px Noto Sans';
-		switch(ansPos) {
-			case 1:
-			  context.fillText('a. ' + ans, 230, 220);
-			  context.fillText('b. ' + ans1, 230, 255);
-			  context.fillText('c. ' + ans2, 230, 290);
-			  context.fillText('d. ' + ans3, 230, 325);
-			  break;
-			case 2:
-			  context.fillText('a. ' + ans1, 230, 220);
-			  context.fillText('b. ' + ans, 230, 255);
-			  context.fillText('c. ' + ans2, 230, 290);
-			  context.fillText('d. ' + ans3, 230, 325);
-			  break;
-			case 3:
-			  context.fillText('a. ' + ans1, 230, 220);
-			  context.fillText('b. ' + ans2, 230, 255);
-			  context.fillText('c. ' + ans, 230, 290);
-			  context.fillText('d. ' + ans3, 230, 325);
-			  break;
-			case 4:
-			  context.fillText('a. ' + ans1, 230, 220);
-			  context.fillText('b. ' + ans2, 230, 255);
-			  context.fillText('c. ' + ans3, 230, 290);
-			  context.fillText('d. ' + ans, 230, 325);
-			  break;
-		}
-	}
-	function randProblem() {
-		num1 = Math.floor(Math.random() * 10);
-		num2 = Math.floor(Math.random() * 10);
-		num3 = Math.floor(Math.random() * 10);
-		if (Math.random() < .5) {
-			ans = num1 + (num2 * num3);
-			exp = num1 + ' + ' + num2 + ' x ' + num3 + ' =';
-		}
+		context.fillText('Correct: ' + School.numCorrect + ' / 10', 580, 338);
+		if (School.numDone < 10)
+			School.prob();
 		else {
-			ans = num1 + (num2 * num3);
-			exp = num1 + ' + ' + num2 + ' x ' + num3 + ' =';
+			pLife += 7000 * (School.numCorrect / 10);
+			state = 1;
+			destX = 530;
+			destY = 300;
 		}
-		if (Math.random() < .5)
-			ans1 = ans - (Math.floor(Math.random() * 10) + 1);
+	}
+}
+
+College = new Object();
+
+function startCollege() {
+	if (pLife < 21000 || pMoney < 500)
+		College.canGo = false;
+	else
+		College.canGo = true;
+	College.numDone = 0;
+	College.numCorrect = 0;
+
+	num1 = new Array();
+	num2 = new Array();
+	opt0 = new Array();
+	opt1 = new Array();
+	opt2 = new Array();
+	opt3 = new Array();
+	College.ansPos = new Array();
+
+	College.prob = function() {
+		context.fillStyle = '#ffffff';
+		context.font = '30px Noto Sans';
+		context.fillText(num1[College.numDone] + ' x ' + num2[College.numDone] + ' =', 220, 175);
+		if (240 <= mPosX && mPosX <= 390 && 190 <= mPosY && mPosY <= 220)
+			context.fillStyle = '#ffffff';
 		else
-			ans1 = ans + (Math.floor(Math.random() * 10) + 1);
-		if (Math.random() < .5)
-			ans2 = ans - (Math.floor(Math.random() * 10) + 1);
+			context.fillStyle = '#bdbdbd';
+		context.fillText('a. ' + opt0[College.numDone], 240, 220);
+		if (240 <= mPosX && mPosX <= 390 && 230 <= mPosY && mPosY <= 260)
+			context.fillStyle = '#ffffff';
 		else
-			ans2 = ans + (Math.floor(Math.random() * 10) + 1);
-		if (Math.random() < .5)
-			ans3 = ans - (Math.floor(Math.random() * 10) + 1);
+			context.fillStyle = '#bdbdbd';
+		context.fillText('b. ' + opt1[College.numDone], 240, 260);
+		if (240 <= mPosX && mPosX <= 390 && 270 <= mPosY && mPosY <= 300)
+			context.fillStyle = '#ffffff';
 		else
-			ans3 = ans + (Math.floor(Math.random() * 10) + 1);
-		ansPos = Math.floor(Math.random() * 4) + 1;
+			context.fillStyle = '#bdbdbd';
+		context.fillText('c. ' + opt2[College.numDone], 240, 300);
+		if (240 <= mPosX && mPosX <= 390 && 310 <= mPosY && mPosY <= 340)
+			context.fillStyle = '#ffffff';
+		else
+			context.fillStyle = '#bdbdbd';
+		context.fillText('d. ' + opt3[College.numDone], 240, 340);
+		if (240 <= mClickX && mClickX <= 390 && 190 <= mClickY && mClickY <= 220) {
+			if (College.ansPos[College.numDone] == 0)
+				College.numCorrect++;
+			College.numDone++;
+			mClickX = '';
+			mClickY = '';
+		}
+		if (240 <= mClickX && mClickX <= 390 && 230 <= mClickY && mClickY <= 260) {
+			if (College.ansPos[College.numDone] == 1)
+				College.numCorrect++;
+			College.numDone++;
+			mClickX = '';
+			mClickY = '';
+		}
+		if (240 <= mClickX && mClickX <= 390 && 270 <= mClickY && mClickY <= 300) {
+			if (College.ansPos[College.numDone] == 2)
+				College.numCorrect++;
+			College.numDone++;
+			mClickX = '';
+			mClickY = '';
+		}
+		if (240 <= mClickX && mClickX <= 390 && 310 <= mClickY && mClickY <= 340) {
+			if (College.ansPos[College.numDone] == 3)
+				College.numCorrect++;
+			College.numDone++;
+			mClickX = '';
+			mClickY = '';
+		}
+	}
+
+	for (var i = 0; i < 10; i++) {
+		num1[i] = Math.floor(Math.random() * 10);
+		num2[i] = Math.floor(Math.random() * 10);
+		ans = num1[i] * num2[i];
+		if (Math.random() < .5)
+			ans1 = ans - (Math.floor(Math.random() * 3) + 1);
+		else
+			ans1 = ans + (Math.floor(Math.random() * 3) + 1);
+		if (Math.random() < .5)
+			ans2 = ans - (Math.floor(Math.random() * 3) + 4);
+		else
+			ans2 = ans + (Math.floor(Math.random() * 3) + 4);
+		if (Math.random() < .5)
+			ans3 = ans - (Math.floor(Math.random() * 3) + 7);
+		else
+			ans3 = ans + (Math.floor(Math.random() * 3) + 7);
+		College.ansPos[i] = Math.floor(Math.random() * 4)
+		switch (College.ansPos[i]) {
+			case 0:
+			  opt0[i] = ans;
+			  opt1[i] = ans1;
+			  opt2[i] = ans2;
+			  opt3[i] = ans3;
+			  break;
+			case 1:
+			  opt0[i] = ans1;
+			  opt1[i] = ans;
+			  opt2[i] = ans2;
+			  opt3[i] = ans3;
+			  break;
+			case 2:
+			  opt0[i] = ans1;
+			  opt1[i] = ans2;
+			  opt2[i] = ans;
+			  opt3[i] = ans3;
+			  break;
+			case 3:
+			  opt0[i] = ans1;
+			  opt1[i] = ans2;
+			  opt2[i] = ans3;
+			  opt3[i] = ans;
+			  break;
+		}
+	}
+}
+
+function drawCollege() {
+	context.fillStyle = '#282828';
+	context.fillRect(200, 100, 500, 300);
+	if (490 <= mPosX && mPosX <= 690 && 345 <= mPosY && mPosY <= 390)
+		context.fillStyle = '#ffffff';
+	else
+		context.fillStyle = '#bdbdbd';
+	context.font = '30px Basic Title Font';
+	context.fillText('Return', 580, 378);
+	if (490 <= mClickX && mClickX <= 690 && 345 <= mClickY && mClickY <= 390) {
+		state = 1;
+		mClickX = '';
+		mClickY = '';
+		destX = 530;
+		destY = 300;
+	}
+	context.fillStyle = '#ffffff';
+	context.font = '15px Noto Sans';
+	if (College.canGo == false) {
+		context.fillText('Sorry, you cannot go to community college.', 220, 135);
+		context.fillText('You must have 21000 LifePoints and $500.', 220, 160);
+	}
+	else {
+		context.fillText('Complete 10 problems to receive up to 14000 LifePoints.', 220, 135);
+		context.fillText('(Costs $500)', 580, 313)
+		context.fillText('Correct: ' + College.numCorrect + ' / 10', 580, 338);
+		if (College.numDone < 10)
+			College.prob();
+		else {
+			pLife += 14000 * (College.numCorrect / 10);
+			pMoney -= 500;
+			state = 1;
+			destX = 530;
+			destY = 300;
+		}
+	}
+}
+
+University = new Object();
+
+function startUniversity() {
+	if (pLife < 35000 || pMoney < 1500)
+		University.canGo = false;
+	else
+		University.canGo = true;
+	University.numDone = 0;
+	University.numCorrect = 0;
+
+	num1 = new Array();
+	num2 = new Array();
+	num3 = new Array();
+	ansType = new Array();
+	opt0 = new Array();
+	opt1 = new Array();
+	opt2 = new Array();
+	opt3 = new Array();
+	University.ansPos = new Array();
+
+	University.prob = function() {
+		context.fillStyle = '#ffffff';
+		context.font = '30px Noto Sans';
+		if (ansType[University.numDone] < .5)
+			context.fillText(num1[University.numDone] + ' + ' + num2[University.numDone] + ' x ' + num3[University.numDone] + ' =', 220, 175);
+		else
+			context.fillText(num1[University.numDone] + ' x ' + num2[University.numDone] + ' + ' + num3[University.numDone] + ' =', 220, 175);
+		if (240 <= mPosX && mPosX <= 390 && 190 <= mPosY && mPosY <= 220)
+			context.fillStyle = '#ffffff';
+		else
+			context.fillStyle = '#bdbdbd';
+		context.fillText('a. ' + opt0[University.numDone], 240, 220);
+		if (240 <= mPosX && mPosX <= 390 && 230 <= mPosY && mPosY <= 260)
+			context.fillStyle = '#ffffff';
+		else
+			context.fillStyle = '#bdbdbd';
+		context.fillText('b. ' + opt1[University.numDone], 240, 260);
+		if (240 <= mPosX && mPosX <= 390 && 270 <= mPosY && mPosY <= 300)
+			context.fillStyle = '#ffffff';
+		else
+			context.fillStyle = '#bdbdbd';
+		context.fillText('c. ' + opt2[University.numDone], 240, 300);
+		if (240 <= mPosX && mPosX <= 390 && 310 <= mPosY && mPosY <= 340)
+			context.fillStyle = '#ffffff';
+		else
+			context.fillStyle = '#bdbdbd';
+		context.fillText('d. ' + opt3[University.numDone], 240, 340);
+		if (240 <= mClickX && mClickX <= 390 && 190 <= mClickY && mClickY <= 220) {
+			if (University.ansPos[University.numDone] == 0)
+				University.numCorrect++;
+			University.numDone++;
+			mClickX = '';
+			mClickY = '';
+		}
+		if (240 <= mClickX && mClickX <= 390 && 230 <= mClickY && mClickY <= 260) {
+			if (University.ansPos[University.numDone] == 1)
+				University.numCorrect++;
+			University.numDone++;
+			mClickX = '';
+			mClickY = '';
+		}
+		if (240 <= mClickX && mClickX <= 390 && 270 <= mClickY && mClickY <= 300) {
+			if (University.ansPos[University.numDone] == 2)
+				University.numCorrect++;
+			University.numDone++;
+			mClickX = '';
+			mClickY = '';
+		}
+		if (240 <= mClickX && mClickX <= 390 && 310 <= mClickY && mClickY <= 340) {
+			if (University.ansPos[University.numDone] == 3)
+				University.numCorrect++;
+			University.numDone++;
+			mClickX = '';
+			mClickY = '';
+		}
+	}
+
+	for (var i = 0; i < 10; i++) {
+		num1[i] = Math.floor(Math.random() * 10);
+		num2[i] = Math.floor(Math.random() * 10);
+		num3[i] = Math.floor(Math.random() * 10);
+		ansType[i] = Math.random();
+		if (ansType[i] < .5)
+			ans = num1[i] + (num2[i] * num3[i]);
+		else
+			ans = (num1[i] * num2[i]) + num3[i];
+		if (Math.random() < .5)
+			ans1 = ans - (Math.floor(Math.random() * 3) + 1);
+		else
+			ans1 = ans + (Math.floor(Math.random() * 3) + 1);
+		if (Math.random() < .5)
+			ans2 = ans - (Math.floor(Math.random() * 3) + 4);
+		else
+			ans2 = ans + (Math.floor(Math.random() * 3) + 4);
+		if (Math.random() < .5)
+			ans3 = ans - (Math.floor(Math.random() * 3) + 7);
+		else
+			ans3 = ans + (Math.floor(Math.random() * 3) + 7);
+		University.ansPos[i] = Math.floor(Math.random() * 4)
+		switch (University.ansPos[i]) {
+			case 0:
+			  opt0[i] = ans;
+			  opt1[i] = ans1;
+			  opt2[i] = ans2;
+			  opt3[i] = ans3;
+			  break;
+			case 1:
+			  opt0[i] = ans1;
+			  opt1[i] = ans;
+			  opt2[i] = ans2;
+			  opt3[i] = ans3;
+			  break;
+			case 2:
+			  opt0[i] = ans1;
+			  opt1[i] = ans2;
+			  opt2[i] = ans;
+			  opt3[i] = ans3;
+			  break;
+			case 3:
+			  opt0[i] = ans1;
+			  opt1[i] = ans2;
+			  opt2[i] = ans3;
+			  opt3[i] = ans;
+			  break;
+		}
+	}
+}
+
+function drawUniversity() {
+	context.fillStyle = '#282828';
+	context.fillRect(200, 100, 500, 300);
+	if (490 <= mPosX && mPosX <= 690 && 345 <= mPosY && mPosY <= 390)
+		context.fillStyle = '#ffffff';
+	else
+		context.fillStyle = '#bdbdbd';
+	context.font = '30px Basic Title Font';
+	context.fillText('Return', 580, 378);
+	if (490 <= mClickX && mClickX <= 690 && 345 <= mClickY && mClickY <= 390) {
+		state = 1;
+		mClickX = '';
+		mClickY = '';
+		destX = 530;
+		destY = 300;
+	}
+	context.fillStyle = '#ffffff';
+	context.font = '15px Noto Sans';
+	if (College.canGo == false) {
+		context.fillText('Sorry, you cannot go to university.', 220, 135);
+		context.fillText('You must have 35000 LifePoints and $1500.', 220, 160);
+	}
+	else {
+		context.fillText('Complete 10 problems to receive up to 28000 LifePoints.', 220, 135);
+		context.fillText('(Costs $1500)', 580, 313)
+		context.fillText('Correct: ' + University.numCorrect + ' / 10', 580, 338);
+		if (University.numDone < 10)
+			University.prob();
+		else {
+			pLife += 28000 * (University.numCorrect / 10);
+			pMoney -= 1500;
+			state = 1;
+			destX = 530;
+			destY = 300;
+		}
 	}
 }
 
 // Visual Elements
-function base() {
-	// Draw field
-	context.fillStyle = context.createPattern(grass, 'repeat');
-	context.fillRect(0, 0, 900, 500);
-	context.drawImage(house, 400, 200);
-	context.drawImage(school, 20, 55);
-	context.drawImage(college, 20, 175);
-	context.drawImage(university, 20, 295);
-	context.drawImage(work, 750, 100);
-	// Draw player
-	context.drawImage(guy, pPosX - 25, pPosY - 25);
+function bar() {
 	// Draw bar
 	context.fillStyle = '#282828';
 	context.fillRect(0,0,900,35);
@@ -509,9 +715,21 @@ function pauseButton() {
 	else
 		gameCanvas.style.cursor = 'default';
 	if (860 <= mClickX && mClickX <= 890 && 2 <= mClickY && mClickY <= 32) {
-		predisp = disp;
-		disp = 0;
+		prestate = state;
+		state = 0;
 	}
+}
+function scene() {
+	// Draw field
+	context.fillStyle = context.createPattern(grass, 'repeat');
+	context.fillRect(0, 35, 900, 465);
+	context.drawImage(house, 400, 200);
+	context.drawImage(school, 20, 55);
+	context.drawImage(college, 20, 175);
+	context.drawImage(university, 20, 295);
+	context.drawImage(work, 750, 100);
+	// Draw player
+	context.drawImage(guy, pPosX - 25, pPosY - 25);
 }
 function shade() {
 	context.globalAlpha = 0.9;
