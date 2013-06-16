@@ -43,20 +43,23 @@ var mClickY; 		// Mouse Click Position
 
 function initialize() {
 	// Parameter variables
-	window.state = 0;		// Current game state
-	window.prestate = 1;	// Previous game state
+	window.state = 0;			// Current game state
+	window.prestate = 1;		// Previous game state
 
-	window.pPosX = 530;		// Initial player position
-	window.pPosY = 300;		// Initial player position
-	window.destX = 530;		// Player destination
-	window.destY = 300;		// Player destination
-	window.pSpeed = 300;	// Player speed (pixels per second)
+	window.pPosX = 530;			// Initial player position
+	window.pPosY = 300;			// Initial player position
+	window.destX = 530;			// Player destination
+	window.destY = 300;			// Player destination
+	window.pSpeed = 300;		// Player speed (pixels per second)
 
-	window.pLife = 0;		// Player initial LifePoints
-	window.pMoney = 0;		// Player initial Money
-	window.pAge = 14;		// Player initial Age
-	window.pAgeRate = 60;	// Player Age Rate (seconds)
-	window.pMood = true;	// Player initial Mood (true = happy, false = sad)
+	window.pLife = 0;			// Player initial LifePoints
+	window.pMoney = 0;			// Player initial Money
+	window.attSchool = 0;		// Number of times player attended high school
+	window.attCollege = 0;		// Number of times player attended college
+	window.attUniversity = 0;	// Number ot times player attended university
+	window.pAge = 14;			// Player initial Age
+	window.pAgeRate = 60;		// Player Age Rate (seconds)
+	window.pMood = true;		// Player initial Mood (true = happy, false = sad)
 }
 
 initialize();
@@ -224,8 +227,10 @@ School = new Object();
 function startSchool() {
 	if (Math.floor(pAge) > 20)
 		School.canGo = false;
-	else
+	else {
 		School.canGo = true;
+		attSchool++;
+	}
 	School.numDone = 0;
 	School.numCorrect = 0;
 
@@ -376,8 +381,10 @@ College = new Object();
 function startCollege() {
 	if (pLife < 21000 || pMoney < 500)
 		College.canGo = false;
-	else
+	else {
 		College.canGo = true;
+		attCollege++;
+	}
 	College.numDone = 0;
 	College.numCorrect = 0;
 
@@ -532,8 +539,10 @@ University = new Object();
 function startUniversity() {
 	if (pLife < 35000 || pMoney < 1500)
 		University.canGo = false;
-	else
+	else {
 		University.canGo = true;
+		attUniversity++;
+	}
 	University.numDone = 0;
 	University.numCorrect = 0;
 
