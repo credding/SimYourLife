@@ -13,6 +13,7 @@ canvas.addEventListener('click', function() {
 
 // Define Image Objects
 var grass = new Image();
+var tile = new Image();
 var guy = new Image();
 var happy = new Image();
 var sad = new Image();
@@ -22,9 +23,13 @@ var school = new Image();
 var college = new Image();
 var university = new Image();
 var work = new Image();
+var mcronalds = new Image();
+var salesperson = new Image();
+var engineer = new Image();
 
 // Load Image Objects
 grass.src = 'img/grass.png';
+tile.src = 'img/tile.png';
 guy.src = 'img/guy.png';
 happy.src = 'img/smile.png';
 sad.src = 'img/frown.png';
@@ -34,6 +39,9 @@ school.src = 'img/school.png';
 college.src = 'img/college.png';
 university.src = 'img/university.png';
 work.src = 'img/work.png';
+mcronalds.src = 'img/mcronalds.png';
+salesperson.src = 'img/salesperson.png';
+engineer.src = 'img/engineer.png';
 
 // Mouse & Keyboard variables
 var mPosX;			// Current Mouse Position
@@ -45,6 +53,7 @@ function initialize() {
 	// Parameter variables
 	window.state = 0;			// Current game state
 	window.prestate = 1;		// Previous game state
+	window.sceneNum = 0;		// Scene to draw
 
 	window.pPosX = 530;			// Initial player position
 	window.pPosY = 300;			// Initial player position
@@ -100,6 +109,12 @@ function tick() {
 		  scene();
 		  shade();
 		  drawUniversity();
+		  break;
+		case 5:
+		  age();
+		  pauseButton();
+		  scene();
+		  drawWork();
 		  break;
 	}
 }
@@ -210,7 +225,10 @@ function drawMain() {
 			destX = mClickX;
 			destY = mClickY;
 			if (750 <= pPosX && pPosX <= 850 && 100 <= pPosY && pPosY <= 300) {
-
+				state = 5;
+				sceneNum = 1;
+				mClickX = '';
+				mClickY = '';
 			}
 		}
 		else {
@@ -733,14 +751,26 @@ function pauseButton() {
 	}
 }
 function scene() {
-	// Draw field
-	context.fillStyle = context.createPattern(grass, 'repeat');
-	context.fillRect(0, 35, 900, 465);
-	context.drawImage(house, 400, 200);
-	context.drawImage(school, 20, 55);
-	context.drawImage(college, 20, 175);
-	context.drawImage(university, 20, 295);
-	context.drawImage(work, 750, 100);
+	// Draw scene
+	switch (sceneNum) {
+		case 0:
+		  context.fillStyle = context.createPattern(grass, 'repeat');
+		  context.fillRect(0, 35, 900, 465);
+		  context.drawImage(house, 400, 200);
+		  context.drawImage(school, 20, 55);
+		  context.drawImage(college, 20, 175);
+		  context.drawImage(university, 20, 295);
+		  context.drawImage(work, 750, 100);
+		  break;
+		case 1:
+		  context.fillStyle = context.createPattern(tile, 'repeat');
+		  context.fillRect(0, 35, 900, 465);
+		  context.drawImage(mcronalds, 20, 55);
+		  context.drawImage(salesperson, 20, 175);
+		  context.drawImage(engineer, 20, 295);
+		  context.drawImage(work, 750, 100);
+		  break;
+	}
 	// Draw player
 	context.drawImage(guy, pPosX - 25, pPosY - 25);
 }
