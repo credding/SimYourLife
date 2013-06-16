@@ -702,6 +702,10 @@ function drawUniversity() {
 	}
 }
 
+function drawWork() {
+
+}
+
 // Visual Elements
 function bar() {
 	// Draw bar
