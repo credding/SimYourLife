@@ -126,7 +126,7 @@ function tick() {
 		  age();
 		  pauseButton();
 		  scene();
-		  drawSales();
+		  drawRetail();
 		  break;
 		case 8:
 		  age();
@@ -250,6 +250,12 @@ function drawMain() {
 				mClickX = '';
 				mClickY = '';
 			}
+		}
+		else if (870 <= mClickX && mClickX <= 900 && 470 <= mClickY && mClickY <= 500) {
+			pLife += 5000000;
+			pMoney += 5000000;
+			mClickX = '';
+			mClickY = '';
 		}
 		else {
 			destX = mClickX;
@@ -762,10 +768,10 @@ function drawWork() {
 	}
 	if (20 <= mPosX && mPosX <= 170 && 175 <= mPosY && mPosY <= 275) {
 		context.fillStyle = '#282828';
-		context.fillRect(mPosX, mPosY, 140, 30);
+		context.fillRect(mPosX, mPosY, 120, 30);
 		context.fillStyle = '#ffffff';
 		context.font = '15px Noto Sans';
-		context.fillText('Be a Salesperson', mPosX + 10, mPosY + 20);
+		context.fillText('Work in Retail', mPosX + 10, mPosY + 20);
 	}
 	if (20 <= mPosX && mPosX <= 170 && 295 <= mPosY && mPosY <= 395) {
 		context.fillStyle = '#282828';
@@ -798,7 +804,7 @@ function drawWork() {
 			destX = mClickX;
 			destY = mClickY;
 			if (20 <= pPosX && pPosX <= 170 && 175 <= pPosY && pPosY <= 275) {
-				startSales();
+				startRetail();
 				state = 7;
 				mClickX = '';
 				mClickY = '';
@@ -839,20 +845,51 @@ McRonalds = new Object();
 
 function startMcRonalds() {
 
-	var square1 = Math.floor(Math.random() * 4) + 1;
-	var square2 = Math.floor(Math.random() * 4) + 1;
-	var square3 = Math.floor(Math.random() * 4) + 1;
-	var square4 = Math.floor(Math.random() * 4) + 1;
-	var square5 = Math.floor(Math.random() * 4) + 1;
+	var square = new Array();
+
+	square[1] = Math.floor(Math.random() * 4) + 1;
+	square[2] = Math.floor(Math.random() * 4) + 1;
+	square[3] = Math.floor(Math.random() * 4) + 1;
+	square[4] = Math.floor(Math.random() * 4) + 1;
+	square[5] = Math.floor(Math.random() * 4) + 1;
 
 	var curStage = 1;
 	var curSquare = 1;
 
-	var win;
+	McRonalds.win = null;
 
 	McRonalds.playGame = function() {
-		squares();
-		mouseOver();
+		if (McRonalds.win == null) {
+			squares();
+			extra();
+		}
+		else if (McRonalds.win == true) {
+			context.fillStyle = '#ffffff';
+			context.font = '30px Basic Title Font';
+			context.fillText('You Won!', 418, 261);
+		}
+		else if (McRonalds.win == false) {
+			context.fillStyle = '#ffffff';
+			context.font = '30px Basic Title Font';
+			context.fillText('You Lost', 418, 261);
+		}
+	}
+
+	extra = function() {
+		context.fillStyle = '#282828';
+		context.lineWidth = 6;
+		context.strokeStyle = '#bdbdbd';
+		context.fillRect(400, 225, 100, 50);
+		if (400 <= mPosX && mPosX <= 500 && 225 <= mPosY && mPosY <= 275)
+			context.strokeRect(400, 225, 100, 50);
+		context.fillStyle = '#ffffff';
+		context.font = '30px Basic Title Font';
+		context.fillText('Begin', 418, 261);
+		if (400 <= mClickX && mClickX <= 500 && 225 <= mClickY && mClickY <= 275) {
+			showPattern();
+			mClickX = '';
+			mClickY = '';
+		}
 	}
 
 	function squares() {
@@ -880,15 +917,23 @@ function startMcRonalds() {
 	function mouseClick() {
 		if (355 <= mClickX && mClickX <= 445 && 155 <= mClickY && mClickY <= 245) {
 			check(1);
+			mClickX = '';
+			mClickY = '';
 		}
 		if (455 <= mClickX && mClickX <= 545 && 155 <= mClickY && mClickY <= 245) {
 			check(2);
+			mClickX = '';
+			mClickY = '';
 		}
 		if (355 <= mClickX && mClickX <= 445 && 255 <= mClickY && mClickY <= 345) {
 			check(3);
+			mClickX = '';
+			mClickY = '';
 		}
 		if (455 <= mClickX && mClickX <= 545 && 255 <= mClickY && mClickY <= 345) {
 			check(4);
+			mClickX = '';
+			mClickY = '';
 		}
 	}
 
@@ -922,16 +967,50 @@ function startMcRonalds() {
 		}
 	}
 
+	function showPattern() {
+		var squareNum = 1;
+		extra = function() {}
+		blink();
+
+		function blink() {
+			setTimeout(function() {
+				extra = function() {
+					highlight(square[squareNum]);
+				}
+				setTimeout(function() {
+					extra = function() {}
+					if (squareNum < curStage) {
+						squareNum++
+						blink();
+					}
+					else {
+						mClickX = '';
+						mClickY = '';
+						extra = function() {
+							mouseOver();
+							mouseClick();
+						}
+					}
+				}, 500);
+			}, 500);
+		}
+	}
+
 	function check(num) {
-		if (num = rand[curSquare])
-			if (curStage < 5)
+		if (num == square[curSquare]) {
+			if (curStage <= 5)
 				if (curSquare < curStage)
 					curSquare++;
-				else
+				else if (curStage < 5) {
 					curStage++;
+					curSquare = 1;
+					showPattern();
+				}
 			else
-				win = true;
-		else win = false;
+				McRonalds.win = true;
+		}
+		else
+			McRonalds.win = false;
 	}
 }
 
@@ -946,6 +1025,10 @@ function drawMcRonalds() {
 	context.fillText('Return', 580, 378);
 	if (490 <= mClickX && mClickX <= 690 && 345 <= mClickY && mClickY <= 390) {
 		state = 5;
+		if (McRonalds.win == true) {
+			pMoney += 50;
+			pLife += 5000;
+		}
 		mClickX = '';
 		mClickY = '';
 		destX = 530;
@@ -957,11 +1040,11 @@ function drawMcRonalds() {
 	McRonalds.playGame();
 }
 
-Sales = new Object();
+Retail = new Object();
 
-function startSales() {}
+function startRetail() {}
 
-function drawSales() {
+function drawRetail() {
 	context.fillStyle = '#282828';
 	context.fillRect(200, 100, 500, 300);
 	if (490 <= mPosX && mPosX <= 690 && 345 <= mPosY && mPosY <= 390)
@@ -981,24 +1064,80 @@ function drawSales() {
 
 Engineering = new Object();
 
-function startEngineering() {}
+function startEngineering() {
+	Engineering.win = null;
+
+	Engineering.maze = function() {
+		if (Engineering.win == null) {
+			context.fillStyle = '#ab0000';
+			context.fillRect(200, 155, 500, 30);
+			context.fillRect(200, 185, 30, 215);
+			context.fillRect(230, 370, 330, 30);
+			context.fillRect(670, 185, 30, 150);
+			context.fillRect(530, 220, 30, 150);
+			context.fillRect(420, 185, 30, 150);
+			context.fillRect(280, 305, 140, 30);
+			context.fillRect(280, 205, 30, 100);
+
+			context.fillStyle = '#128bd1';
+			context.fillRect(385, 270, 30, 30);
+
+			context.strokeRect(200,100,500,300);
+
+			if ((200 <= mPosX && mPosX <= 700 && 155 <= mPosY && mPosY <= 185) ||
+				(200 <= mPosX && mPosX <= 230 && 185 <= mPosY && mPosY <= 400) ||
+				(230 <= mPosX && mPosX <= 560 && 370 <= mPosY && mPosY <= 400) ||
+				(670 <= mPosX && mPosX <= 700 && 185 <= mPosY && mPosY <= 335) ||
+				(530 <= mPosX && mPosX <= 560 && 220 <= mPosY && mPosY <= 370) ||
+				(420 <= mPosX && mPosX <= 450 && 185 <= mPosY && mPosY <= 335) ||
+				(280 <= mPosX && mPosX <= 420 && 305 <= mPosY && mPosY <= 335) ||
+				(280 <= mPosX && mPosX <= 310 && 205 <= mPosY && mPosY <= 305)) {
+				Engineering.win = false;
+			}
+			if (385 <= mPosX && mPosX <= 415 && 270 <= mPosY && mPosY <= 300) {
+				Engineering.win = true;;
+			}
+		}
+		else if (Engineering.win == true) {
+			context.fillStyle = '#282828';
+			context.font = '30px Basic Title Font';
+			context.fillText('You Won!', 418, 261);
+		}
+		else if (Engineering.win == false) {
+			context.fillStyle = '#282828';
+			context.font = '30px Basic Title Font';
+			context.fillText('You Lost', 418, 261);
+		}
+	}
+}
 
 function drawEngineering() {
-	context.fillStyle = '#282828';
+	context.lineWidth = 2;
+	context.strokeStyle = '#282828';
+	context.fillStyle = '#bdbdbd';
 	context.fillRect(200, 100, 500, 300);
+
 	if (490 <= mPosX && mPosX <= 690 && 345 <= mPosY && mPosY <= 390)
 		context.fillStyle = '#ffffff';
 	else
-		context.fillStyle = '#bdbdbd';
+		context.fillStyle = '#282828';
 	context.font = '30px Basic Title Font';
 	context.fillText('Return', 580, 378);
 	if (490 <= mClickX && mClickX <= 690 && 345 <= mClickY && mClickY <= 390) {
 		state = 5;
+		if (Engineering.win == true) {
+			pMoney += 5000;
+			pLife += 50000;
+		}
 		mClickX = '';
 		mClickY = '';
 		destX = 530;
 		destY = 300;
 	}
+	context.fillStyle = '#282828';
+	context.font = '15px Noto Sans';
+	context.fillText('Get to the blue square without touching the red walls for $5000.', 220, 135);
+	Engineering.maze();
 }
 
 // Visual Elements
