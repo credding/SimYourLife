@@ -116,6 +116,24 @@ function tick() {
 		  scene();
 		  drawWork();
 		  break;
+		case 6:
+		  age();
+		  pauseButton();
+		  scene();
+		  drawMcRonalds();
+		  break;
+		case 7:
+		  age();
+		  pauseButton();
+		  scene();
+		  drawSales();
+		  break;
+		case 8:
+		  age();
+		  pauseButton();
+		  scene();
+		  drawEngineering();
+		  break;
 	}
 }
 
@@ -227,6 +245,8 @@ function drawMain() {
 			if (750 <= pPosX && pPosX <= 850 && 100 <= pPosY && pPosY <= 300) {
 				state = 5;
 				sceneNum = 1;
+				destX = 530;
+				destY = 300;
 				mClickX = '';
 				mClickY = '';
 			}
@@ -721,7 +741,264 @@ function drawUniversity() {
 }
 
 function drawWork() {
+	// Move Player
+	if (Math.abs(pPosX - destX) > pSpeed / 25 || Math.abs(pPosY - destY) > pSpeed / 25) {
+		var xDistance = destX - pPosX;
+		var yDistance = destY - pPosY;
+		var move = pSpeed / 25 / (Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2)));
+		var xMove = xDistance * move;
+		var yMove = yDistance * move;
+		pPosX += xMove;
+		pPosY += yMove;
+	}
 
+	// Draw Tips
+	if (20 <= mPosX && mPosX <= 170 && 55 <= mPosY && mPosY <= 155) {
+		context.fillStyle = '#282828';
+		context.fillRect(mPosX, mPosY, 160, 30);
+		context.fillStyle = '#ffffff';
+		context.font = '15px Noto Sans';
+		context.fillText("Work at McRonald's", mPosX + 10, mPosY + 20);
+	}
+	if (20 <= mPosX && mPosX <= 170 && 175 <= mPosY && mPosY <= 275) {
+		context.fillStyle = '#282828';
+		context.fillRect(mPosX, mPosY, 140, 30);
+		context.fillStyle = '#ffffff';
+		context.font = '15px Noto Sans';
+		context.fillText('Be a Salesperson', mPosX + 10, mPosY + 20);
+	}
+	if (20 <= mPosX && mPosX <= 170 && 295 <= mPosY && mPosY <= 395) {
+		context.fillStyle = '#282828';
+		context.fillRect(mPosX, mPosY, 175, 30);
+		context.fillStyle = '#ffffff';
+		context.font = '15px Noto Sans';
+		context.fillText('Become an Engineer!!', mPosX + 10, mPosY + 20);
+	}
+	if (750 <= mPosX && mPosX <= 850 && 100 <= mPosY && mPosY <= 300) {
+		context.fillStyle = '#282828';
+		context.fillRect(mPosX - 125, mPosY, 125, 30);
+		context.fillStyle = '#ffffff';
+		context.font = '15px Noto Sans';
+		context.fillText('Go Back Home', mPosX - 115, mPosY + 20);
+	}
+
+	// Handle Clicks
+	if (0 <= mClickX && mClickX <= 900 && 35 <= mClickY && mClickY <= 500) {
+		if (20 <= mClickX && mClickX <= 170 && 55 <= mClickY && mClickY <= 155) {
+			destX = mClickX;
+			destY = mClickY;
+			if (20 <= pPosX && pPosX <= 170 && 55 <= pPosY && pPosY <= 155) {
+				startMcRonalds();
+				state = 6;
+				mClickX = '';
+				mClickY = '';
+			}
+		}
+		else if (20 <= mClickX && mClickX <= 170 && 175 <= mClickY && mClickY <= 275) {
+			destX = mClickX;
+			destY = mClickY;
+			if (20 <= pPosX && pPosX <= 170 && 175 <= pPosY && pPosY <= 275) {
+				startSales();
+				state = 7;
+				mClickX = '';
+				mClickY = '';
+			}
+		}
+		else if (20 <= mClickX && mClickX <= 170 && 295 <= mClickY && mClickY <= 395) {
+			destX = mClickX;
+			destY = mClickY;
+			if (20 <= pPosX && pPosX <= 170 && 295 <= pPosY && pPosY <= 395) {
+				startEngineering();
+				state = 8;
+				mClickX = '';
+				mClickY = '';
+			}
+		}
+		else if (750 <= mClickX && mClickX <= 850 && 100 <= mClickY && mClickY <= 300) {
+			destX = mClickX;
+			destY = mClickY;
+			if (750 <= pPosX && pPosX <= 850 && 100 <= pPosY && pPosY <= 300) {
+				state = 1;
+				sceneNum = 0;
+				destX = 530;
+				destY = 300;
+				mClickX = '';
+				mClickY = '';
+			}
+		}
+		else {
+			destX = mClickX;
+			destY = mClickY;
+			mClickX = '';
+			mClickY = '';
+		}
+	}
+}
+
+McRonalds = new Object();
+
+function startMcRonalds() {
+
+	var square1 = Math.floor(Math.random() * 4) + 1;
+	var square2 = Math.floor(Math.random() * 4) + 1;
+	var square3 = Math.floor(Math.random() * 4) + 1;
+	var square4 = Math.floor(Math.random() * 4) + 1;
+	var square5 = Math.floor(Math.random() * 4) + 1;
+
+	var curStage = 1;
+	var curSquare = 1;
+
+	var win;
+
+	McRonalds.playGame = function() {
+		squares();
+		mouseOver();
+	}
+
+	function squares() {
+		context.fillStyle = '#AD1515';
+		context.fillRect(355, 155, 90, 90);
+		context.fillStyle = '#2EAD15';
+		context.fillRect(455, 155, 90, 90);
+		context.fillStyle = '#1550AD';
+		context.fillRect(355, 255, 90, 90);
+		context.fillStyle = '#ADA115';
+		context.fillRect(455, 255, 90, 90);
+	}
+
+	function mouseOver() {
+		if (355 <= mPosX && mPosX <= 445 && 155 <= mPosY && mPosY <= 245)
+			highlight(1);
+		if (455 <= mPosX && mPosX <= 545 && 155 <= mPosY && mPosY <= 245)
+			highlight(2);
+		if (355 <= mPosX && mPosX <= 445 && 255 <= mPosY && mPosY <= 345)
+			highlight(3);
+		if (455 <= mPosX && mPosX <= 545 && 255 <= mPosY && mPosY <= 345)
+			highlight(4);
+	}
+
+	function mouseClick() {
+		if (355 <= mClickX && mClickX <= 445 && 155 <= mClickY && mClickY <= 245) {
+			check(1);
+		}
+		if (455 <= mClickX && mClickX <= 545 && 155 <= mClickY && mClickY <= 245) {
+			check(2);
+		}
+		if (355 <= mClickX && mClickX <= 445 && 255 <= mClickY && mClickY <= 345) {
+			check(3);
+		}
+		if (455 <= mClickX && mClickX <= 545 && 255 <= mClickY && mClickY <= 345) {
+			check(4);
+		}
+	}
+
+	function highlight(num) {
+		context.lineWidth = 6;
+		switch (num) {
+			case 1:
+			  context.fillStyle = '#E01B1B';
+			  context.strokeStyle = '#AD1515';
+			  context.fillRect(355, 155, 90, 90);
+			  context.strokeRect(355, 155, 90, 90);
+			  break;
+			case 2:
+			  context.fillStyle = '#3CE01B';
+			  context.strokeStyle = '#2EAD15';
+			  context.fillRect(455, 155, 90, 90);
+			  context.strokeRect(455, 155, 90, 90);
+			  break;
+			case 3:
+			  context.fillStyle = '#1B68E0';
+			  context.strokeStyle = '#1550AD';
+			  context.fillRect(355, 255, 90, 90);
+			  context.strokeRect(355, 255, 90, 90);
+			  break;
+			case 4:
+			  context.fillStyle = '#E0D11B';
+			  context.strokeStyle = '#ADA115';
+			  context.fillRect(455, 255, 90, 90);
+			  context.strokeRect(455, 255, 90, 90);
+			  break;
+		}
+	}
+
+	function check(num) {
+		if num = rand[curSquare]
+			if (curStage < 5)
+				if (curSquare < curStage)
+					curSquare++;
+				else
+					curStage++;
+			else
+				win = true;
+		else win = false;
+	}
+}
+
+function drawMcRonalds() {
+	context.fillStyle = '#282828';
+	context.fillRect(200, 100, 500, 300);
+	if (490 <= mPosX && mPosX <= 690 && 345 <= mPosY && mPosY <= 390)
+		context.fillStyle = '#ffffff';
+	else
+		context.fillStyle = '#bdbdbd';
+	context.font = '30px Basic Title Font';
+	context.fillText('Return', 580, 378);
+	if (490 <= mClickX && mClickX <= 690 && 345 <= mClickY && mClickY <= 390) {
+		state = 5;
+		mClickX = '';
+		mClickY = '';
+		destX = 530;
+		destY = 300;
+	}
+	context.fillStyle = '#ffffff';
+	context.font = '15px Noto Sans';
+	context.fillText('Click on the squares in the order they light up for $100.', 220, 135);
+	McRonalds.playGame();
+}
+
+Sales = new Object();
+
+function startSales() {}
+
+function drawSales() {
+	context.fillStyle = '#282828';
+	context.fillRect(200, 100, 500, 300);
+	if (490 <= mPosX && mPosX <= 690 && 345 <= mPosY && mPosY <= 390)
+		context.fillStyle = '#ffffff';
+	else
+		context.fillStyle = '#bdbdbd';
+	context.font = '30px Basic Title Font';
+	context.fillText('Return', 580, 378);
+	if (490 <= mClickX && mClickX <= 690 && 345 <= mClickY && mClickY <= 390) {
+		state = 5;
+		mClickX = '';
+		mClickY = '';
+		destX = 530;
+		destY = 300;
+	}
+}
+
+Engineering = new Object();
+
+function startEngineering() {}
+
+function drawEngineering() {
+	context.fillStyle = '#282828';
+	context.fillRect(200, 100, 500, 300);
+	if (490 <= mPosX && mPosX <= 690 && 345 <= mPosY && mPosY <= 390)
+		context.fillStyle = '#ffffff';
+	else
+		context.fillStyle = '#bdbdbd';
+	context.font = '30px Basic Title Font';
+	context.fillText('Return', 580, 378);
+	if (490 <= mClickX && mClickX <= 690 && 345 <= mClickY && mClickY <= 390) {
+		state = 5;
+		mClickX = '';
+		mClickY = '';
+		destX = 530;
+		destY = 300;
+	}
 }
 
 // Visual Elements
