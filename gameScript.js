@@ -923,7 +923,7 @@ function startMcRonalds() {
 	}
 
 	function check(num) {
-		if num = rand[curSquare]
+		if (num = rand[curSquare])
 			if (curStage < 5)
 				if (curSquare < curStage)
 					curSquare++;
