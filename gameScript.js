@@ -24,7 +24,8 @@ var college = new Image();
 var university = new Image();
 var work = new Image();
 var mcronalds = new Image();
-var salesperson = new Image();
+var retail = new Image();
+var ispy = new Image();
 var engineer = new Image();
 
 // Load Image Objects
@@ -40,7 +41,8 @@ college.src = 'img/college.png';
 university.src = 'img/university.png';
 work.src = 'img/work.png';
 mcronalds.src = 'img/mcronalds.png';
-salesperson.src = 'img/salesperson.png';
+retail.src = 'img/salesperson.png';
+ispy.src = 'img/ispy.png';
 engineer.src = 'img/engineer.png';
 
 // Mouse & Keyboard variables
@@ -63,9 +65,6 @@ function initialize() {
 
 	window.pLife = 0;			// Player initial LifePoints
 	window.pMoney = 0;			// Player initial Money
-	window.attSchool = 0;		// Number of times player attended high school
-	window.attCollege = 0;		// Number of times player attended college
-	window.attUniversity = 0;	// Number ot times player attended university
 	window.pAge = 14;			// Player initial Age
 	window.pAgeRate = 60;		// Player Age Rate (seconds)
 	window.pMood = true;		// Player initial Mood (true = happy, false = sad)
@@ -254,6 +253,7 @@ function drawMain() {
 		else if (870 <= mClickX && mClickX <= 900 && 470 <= mClickY && mClickY <= 500) {
 			pLife += 5000000;
 			pMoney += 5000000;
+			pAge += 4;
 			mClickX = '';
 			mClickY = '';
 		}
@@ -273,7 +273,6 @@ function startSchool() {
 		School.canGo = false;
 	else {
 		School.canGo = true;
-		attSchool++;
 	}
 	School.numDone = 0;
 	School.numCorrect = 0;
@@ -407,12 +406,12 @@ function drawSchool() {
 	if (School.canGo == false)
 		context.fillText('Sorry, you are too old to go to High School.', 220, 135);
 	else {
-		context.fillText('Complete 10 problems to receive up to 7000 LifePoints.', 220, 135);
-		context.fillText('Correct: ' + School.numCorrect + ' / 10', 580, 338);
+		context.fillText('Complete 10 problems to receive up to 700 LifePoints.', 220, 135);
+		context.fillText('Correct: ' + School.numCorrect + ' / ' + School.numDone, 580, 338);
 		if (School.numDone < 10)
 			School.prob();
 		else {
-			pLife += 7000 * (School.numCorrect / 10);
+			pLife += 700 * (School.numCorrect / 10);
 			state = 1;
 			destX = 530;
 			destY = 300;
@@ -423,11 +422,10 @@ function drawSchool() {
 College = new Object();
 
 function startCollege() {
-	if (pLife < 21000 || pMoney < 500)
+	if (pLife < 2100 || pMoney < 1000)
 		College.canGo = false;
 	else {
 		College.canGo = true;
-		attCollege++;
 	}
 	College.numDone = 0;
 	College.numCorrect = 0;
@@ -560,17 +558,17 @@ function drawCollege() {
 	context.font = '15px Noto Sans';
 	if (College.canGo == false) {
 		context.fillText('Sorry, you cannot go to community college.', 220, 135);
-		context.fillText('You must have 21000 LifePoints and $500.', 220, 160);
+		context.fillText('You must have 2100 LifePoints and $1000.', 220, 160);
 	}
 	else {
 		context.fillText('Complete 10 problems to receive up to 14000 LifePoints.', 220, 135);
-		context.fillText('(Costs $500)', 580, 313)
-		context.fillText('Correct: ' + College.numCorrect + ' / 10', 580, 338);
+		context.fillText('(Costs $1000)', 580, 313)
+		context.fillText('Correct: ' + College.numCorrect + ' / ' + College.numDone, 580, 338);
 		if (College.numDone < 10)
 			College.prob();
 		else {
-			pLife += 14000 * (College.numCorrect / 10);
-			pMoney -= 500;
+			pLife += 1400 * (College.numCorrect / 10);
+			pMoney -= 1000;
 			state = 1;
 			destX = 530;
 			destY = 300;
@@ -581,11 +579,10 @@ function drawCollege() {
 University = new Object();
 
 function startUniversity() {
-	if (pLife < 35000 || pMoney < 1500)
+	if (pLife < 3500 || pMoney < 15000)
 		University.canGo = false;
 	else {
 		University.canGo = true;
-		attUniversity++;
 	}
 	University.numDone = 0;
 	University.numCorrect = 0;
@@ -726,19 +723,19 @@ function drawUniversity() {
 	}
 	context.fillStyle = '#ffffff';
 	context.font = '15px Noto Sans';
-	if (College.canGo == false) {
+	if (University.canGo == false) {
 		context.fillText('Sorry, you cannot go to university.', 220, 135);
-		context.fillText('You must have 35000 LifePoints and $1500.', 220, 160);
+		context.fillText('You must have 3500 LifePoints and $15000.', 220, 160);
 	}
 	else {
-		context.fillText('Complete 10 problems to receive up to 28000 LifePoints.', 220, 135);
-		context.fillText('(Costs $1500)', 580, 313)
-		context.fillText('Correct: ' + University.numCorrect + ' / 10', 580, 338);
+		context.fillText('Complete 10 problems to receive up to 2800 LifePoints.', 220, 135);
+		context.fillText('(Costs $15000)', 580, 313)
+		context.fillText('Correct: ' + University.numCorrect + ' / ' + University.numDone, 580, 338);
 		if (University.numDone < 10)
 			University.prob();
 		else {
-			pLife += 28000 * (University.numCorrect / 10);
-			pMoney -= 1500;
+			pLife += 2800 * (University.numCorrect / 10);
+			pMoney -= 15000;
 			state = 1;
 			destX = 530;
 			destY = 300;
@@ -844,7 +841,11 @@ function drawWork() {
 McRonalds = new Object();
 
 function startMcRonalds() {
-
+	if (Math.floor(pAge) < 16)
+		McRonalds.canGo = false;
+	else {
+		McRonalds.canGo = true;
+	}
 	var square = new Array();
 
 	square[1] = Math.floor(Math.random() * 4) + 1;
@@ -866,12 +867,12 @@ function startMcRonalds() {
 		else if (McRonalds.win == true) {
 			context.fillStyle = '#ffffff';
 			context.font = '30px Basic Title Font';
-			context.fillText('You Won!', 418, 261);
+			context.fillText('You Won!', 400, 261);
 		}
 		else if (McRonalds.win == false) {
 			context.fillStyle = '#ffffff';
 			context.font = '30px Basic Title Font';
-			context.fillText('You Lost', 418, 261);
+			context.fillText('You Lost', 400, 261);
 		}
 	}
 
@@ -1026,8 +1027,8 @@ function drawMcRonalds() {
 	if (490 <= mClickX && mClickX <= 690 && 345 <= mClickY && mClickY <= 390) {
 		state = 5;
 		if (McRonalds.win == true) {
-			pMoney += 50;
-			pLife += 5000;
+			pMoney += 400;
+			pLife += 100;
 		}
 		mClickX = '';
 		mClickY = '';
@@ -1036,13 +1037,104 @@ function drawMcRonalds() {
 	}
 	context.fillStyle = '#ffffff';
 	context.font = '15px Noto Sans';
-	context.fillText('Click on the squares in the order they light up for $100.', 220, 135);
-	McRonalds.playGame();
+	if (McRonalds.canGo == false) {
+		context.fillText('Sorry, you cannot work at McRonalds.', 220, 135);
+		context.fillText('You must be 16 years old.', 220, 160);
+	}
+	else {
+		context.fillText('Click on the squares in the order they light up for $400.', 220, 135);
+		McRonalds.playGame();
+	}
 }
 
 Retail = new Object();
 
-function startRetail() {}
+function startRetail() {
+	if (Math.floor(pAge) < 16 || pLife < 1500)
+		Retail.canGo = false;
+	else {
+		Retail.canGo = true;
+	}
+
+	Retail.win = null;
+
+	var time = new Timer(15);
+
+	Retail.game = function() {
+		if (Retail.win == null) {
+			context.drawImage(ispy,200,155);
+			context.fillStyle = '#ffffff';
+			context.font = '15px Noto Sans';
+			context.fillText('Time Remaining: ' + time.seconds + ' seconds', 220, 378);
+			if (Retail.items[Retail.curItem].iPosX <= mClickX && mClickX <= Retail.items[Retail.curItem].iPosX2 && Retail.items[Retail.curItem].iPosY <= mClickY && mClickY <= Retail.items[Retail.curItem].iPosY2) {
+				Retail.win = true;
+				mClickX = '';
+				mClickY - '';
+			}
+		}
+		else if (Retail.win == true) {
+			context.fillStyle = '#ffffff';
+			context.font = '30px Basic Title Font';
+			context.fillText('You Won!', 400, 261);
+			time.stop();
+		}
+		else if (Retail.win == false) {
+			context.fillStyle = '#ffffff';
+			context.font = '30px Basic Title Font';
+			context.fillText('You Lost', 400, 261);
+			time.stop();
+		}
+	}
+
+	Retail.items = new Array();
+	Retail.items[1] = new Item('number 65', 165, 155, 195, 180);
+	Retail.items[2] = new Item('number 15', 365, 50, 425, 110);
+	Retail.items[3] = new Item('number 5', 120, 160, 145, 185);
+	Retail.items[4] = new Item('stingray', 75, 0, 115, 50);
+	Retail.items[5] = new Item('butterfly', 375, 115, 435, 170);
+	Retail.items[6] = new Item('red button', 320, 85, 355, 120);
+	Retail.items[7] = new Item('letter M', 165, 110, 200, 150);
+	Retail.items[8] = new Item('swordfish', 90, 115, 170, 150);
+	Retail.items[9] = new Item('green marble', 70, 125, 90, 145);
+	Retail.items[10] = new Item('spool of thread', 425, 50, 460, 95);
+	Retail.items[11] = new Item('octopus', 95, 40, 145, 90);
+	Retail.items[12] = new Item('ribbon', 155, 30, 185, 90);
+	Retail.items[13] = new Item('black car', 200, 95, 230, 140);
+	Retail.items[14] = new Item('letter E', 250, 115, 280, 145);
+	Retail.items[15] = new Item('cheese', 0, 70, 50, 125);
+	Retail.items[16] = new Item('frog', 25, 145, 90, 190);
+	Retail.items[17] = new Item('ladybug', 20, 120, 65, 160);
+	Retail.items[18] = new Item('triangle', 430, 90, 465, 125);
+	Retail.items[19] = new Item('letter V', 190, 15, 225, 55);
+	Retail.items[20] = new Item('house', 180, 40, 210, 70);
+
+	Retail.curItem = Math.floor((Math.random() * 20) + 1);
+
+	function Item(name, posX, posY, posX2, posY2) {
+		this.iName = name;
+		this.iPosX = posX + 200;
+		this.iPosY = posY + 155;
+		this.iPosX2 = posX2 + 200;
+		this.iPosY2 = posY2 + 155;
+		this.iWidth = posX2 - posX;
+		this.iHeight = posY2 - posY;
+	}
+	function Timer(seconds) {
+		this.seconds = seconds;
+		var that = this;
+		this.int = setInterval(function() {
+			if (that.seconds > 1)
+				that.seconds--;
+			else {
+				that.stop();
+				Retail.win = false;
+			}
+		}, 1000);
+		this.stop = function() {
+			clearInterval(that.int);
+		}
+	}
+}
 
 function drawRetail() {
 	context.fillStyle = '#282828';
@@ -1055,16 +1147,38 @@ function drawRetail() {
 	context.fillText('Return', 580, 378);
 	if (490 <= mClickX && mClickX <= 690 && 345 <= mClickY && mClickY <= 390) {
 		state = 5;
+		if (Retail.win == true) {
+			pMoney += 2000;
+			pLife += 300;
+		}
 		mClickX = '';
 		mClickY = '';
 		destX = 530;
 		destY = 300;
 	}
+	context.fillStyle = '#ffffff';
+	context.font = '15px Noto Sans';
+	if (Retail.canGo == false) {
+		context.fillText('Sorry, you cannot work in Retail.', 220, 135);
+		context.fillText('You must be 16 years old and have 1500 LifePoints', 220, 160);
+	}
+	else {
+		context.fillText('Find the ' + Retail.items[Retail.curItem].iName + ' for $2000.', 220, 135);
+		Retail.game();
+	}
+	context.lineWidth = 2;
+	context.strokeStyle = '#282828';
+	context.strokeRect(200,100,500,300);
 }
 
 Engineering = new Object();
 
 function startEngineering() {
+	if (Math.floor(pAge) < 16 || pLife < 1500)
+		Engineering.canGo = false;
+	else {
+		Engineering.canGo = true;
+	}
 	Engineering.win = null;
 
 	Engineering.maze = function() {
@@ -1092,26 +1206,32 @@ function startEngineering() {
 				(280 <= mPosX && mPosX <= 310 && 205 <= mPosY && mPosY <= 305)) {
 				Engineering.win = false;
 			}
+
 			if (385 <= mPosX && mPosX <= 415 && 270 <= mPosY && mPosY <= 300) {
+				context.lineWidth = 6;
+				context.strokeStyle = '#0d689c';
+				context.strokeRect(385, 270, 30, 30);
+			}
+			if (385 <= mClickX && mClickX <= 415 && 270 <= mClickY && mClickY <= 300) {
 				Engineering.win = true;;
+				mClickX = '';
+				mClickY = '';
 			}
 		}
 		else if (Engineering.win == true) {
 			context.fillStyle = '#282828';
 			context.font = '30px Basic Title Font';
-			context.fillText('You Won!', 418, 261);
+			context.fillText('You Won!', 400, 261);
 		}
 		else if (Engineering.win == false) {
 			context.fillStyle = '#282828';
 			context.font = '30px Basic Title Font';
-			context.fillText('You Lost', 418, 261);
+			context.fillText('You Lost', 400, 261);
 		}
 	}
 }
 
 function drawEngineering() {
-	context.lineWidth = 2;
-	context.strokeStyle = '#282828';
 	context.fillStyle = '#bdbdbd';
 	context.fillRect(200, 100, 500, 300);
 
@@ -1124,8 +1244,8 @@ function drawEngineering() {
 	if (490 <= mClickX && mClickX <= 690 && 345 <= mClickY && mClickY <= 390) {
 		state = 5;
 		if (Engineering.win == true) {
-			pMoney += 5000;
-			pLife += 50000;
+			pMoney += 20000;
+			pLife += 1200;
 		}
 		mClickX = '';
 		mClickY = '';
@@ -1134,8 +1254,17 @@ function drawEngineering() {
 	}
 	context.fillStyle = '#282828';
 	context.font = '15px Noto Sans';
-	context.fillText('Get to the blue square without touching the red walls for $5000.', 220, 135);
-	Engineering.maze();
+	if (Engineering.canGo == false) {
+		context.fillText('Sorry, you cannot work as an Engineer.', 220, 135);
+		context.fillText('You must be 16 years old and have 15000 LifePoints', 220, 160);
+	}
+	else {
+		context.fillText('Get to the blue square without touching the red walls for $20000.', 220, 135);
+		Engineering.maze();
+		context.lineWidth = 2;
+	}
+	context.lineWidth = 2;
+	context.strokeStyle = '#282828';
 	context.strokeRect(200,100,500,300);
 }
 
@@ -1149,10 +1278,10 @@ function bar() {
 	context.fillText('LifePoints= ' + pLife, 15, 24);
 	context.fillText('Money= @' + pMoney, 315, 24);
 	context.fillText('Age= ' + Math.floor(pAge), 615, 24);
-	if (pMood)
-		context.drawImage(happy, 820, 2);
-	else
-		context.drawImage(sad, 820, 2);
+//	if (pMood)
+//		context.drawImage(happy, 820, 2);
+//	else
+//		context.drawImage(sad, 820, 2);
 }
 function pauseButton() {
 	context.drawImage(pause, 860, 2);
@@ -1181,7 +1310,7 @@ function scene() {
 		  context.fillStyle = context.createPattern(tile, 'repeat');
 		  context.fillRect(0, 35, 900, 465);
 		  context.drawImage(mcronalds, 20, 55);
-		  context.drawImage(salesperson, 20, 175);
+		  context.drawImage(retail, 20, 175);
 		  context.drawImage(engineer, 20, 295);
 		  context.drawImage(work, 750, 100);
 		  break;
