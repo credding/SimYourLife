@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+		<title>Sim Your Life</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<link rel="icon" type="image/png" href="img/leaf.png">
+	</head>
+<body>
+
+<div id="wrapper">
+	<div class="space"></div>
+	<a href="index.html"><h1>SimYourLife</h1></a>
+	<div id="nav">
+		<a href="index.html" class="cur">Home</a>&nbsp;&nbsp;<a href="play.html">Play</a>&nbsp;&nbsp;<a href="resources.html">resources</a>
+	</div>
+	<div id="body">
+		<h1>Resources</h1>
+		<a href="http://www.bls.gov/" target="_blank"><p class="button">Job outlook</p></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="http://www.fafsa.ed.gov" target="_blank"><p class="button"> paying for college</p></a>&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="http://www.wolframalpha.com/" target="_blank"><p class="button">Math Help</p></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="http://hyperphysics.phy-astr.gsu.edu/hbase/hframe.html" target="_blank"><p class="button">Science help</p></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="https://www.khanacademy.org/" target="_blank"><p class="button">Tutoring</p></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		
+	</div>
+	<div id="foot">
+		<p>Copyright &copy; 2013 SimYourLife. All Rights Reserved.</p>
+	</div>
+</div>
+
+</body>
