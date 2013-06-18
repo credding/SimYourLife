@@ -1082,8 +1082,6 @@ function startEngineering() {
 			context.fillStyle = '#128bd1';
 			context.fillRect(385, 270, 30, 30);
 
-			context.strokeRect(200,100,500,300);
-
 			if ((200 <= mPosX && mPosX <= 700 && 155 <= mPosY && mPosY <= 185) ||
 				(200 <= mPosX && mPosX <= 230 && 185 <= mPosY && mPosY <= 400) ||
 				(230 <= mPosX && mPosX <= 560 && 370 <= mPosY && mPosY <= 400) ||
@@ -1138,6 +1136,7 @@ function drawEngineering() {
 	context.font = '15px Noto Sans';
 	context.fillText('Get to the blue square without touching the red walls for $5000.', 220, 135);
 	Engineering.maze();
+	context.strokeRect(200,100,500,300);
 }
 
 // Visual Elements
