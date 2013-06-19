@@ -1,12 +1,12 @@
 var canvas = document.getElementById('gameCanvas');
 var context = canvas.getContext('2d');
 
-canvas.addEventListener('mousemove', function() {
+canvas.addEventListener('mousemove', function(event) {
 	mPosX = event.offsetX;
 	mPosY = event.offsetY;
 }, false);
 
-canvas.addEventListener('click', function() {
+canvas.addEventListener('click', function(event) {
 	mClickX = event.offsetX;
 	mClickY = event.offsetY;
 }, false);
@@ -23,7 +23,7 @@ function getParam(sname) {
 	return sval;
 }
 if (getParam('cheat') == 'true') {
-	window.addEventListener('keydown', function() {
+	window.addEventListener('keydown', function(event) {
 		switch(event.keyCode) {
 			case 76:
 			  pLife += 100;
