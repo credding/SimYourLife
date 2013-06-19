@@ -11,6 +11,20 @@ canvas.addEventListener('click', function() {
 	mClickY = event.offsetY;
 }, false);
 
+window.addEventListener('keydown', function() {
+	switch(event.keyCode) {
+		case 76:
+		  pLife += 100;
+		  break;
+		case 77:
+		  pMoney += 1000;
+		  break;
+		case 65:
+		  pAge++;
+		  break;
+	}
+}, false);
+
 // Define Image Objects
 var grass = new Image();
 var tile = new Image();
@@ -32,14 +46,14 @@ var engineer = new Image();
 grass.src = 'img/grass.png';
 tile.src = 'img/tile.png';
 guy.src = 'img/guy.png';
-happy.src = 'img/smile.png';
-sad.src = 'img/frown.png';
+//happy.src = 'img/smile.png';
+//sad.src = 'img/frown.png';
 pause.src = 'img/pause.png';
-house.src = 'img/house.png';
+house.src = 'img/house.new.png';
 school.src = 'img/school.new.png';
 college.src = 'img/college.new.png';
-university.src = 'img/university.png';
-work.src = 'img/work.png';
+university.src = 'img/university.new.png';
+work.src = 'img/work.new.png';
 mcronalds.src = 'img/mcronalds.png';
 retail.src = 'img/salesperson.png';
 ispy.src = 'img/ispy.png';
@@ -63,6 +77,11 @@ function initialize() {
 	window.destY = 300;			// Player destination
 	window.pSpeed = 300;		// Player speed (pixels per second)
 
+	window.attSchool = 0;
+	window.attCollege = 0;
+	window.attUniversity = 0;
+	window.gotEngineering = false;
+
 	window.pLife = 0;			// Player initial LifePoints
 	window.pMoney = 0;			// Player initial Money
 	window.pAge = 14;			// Player initial Age
@@ -75,20 +94,22 @@ initialize();
 setInterval(tick,40);
 
 function tick() {
-	bar();
 	switch(state) {
 		case 0:
+		  bar();
 		  scene();
 		  shade();
 		  drawPause();
 		  break;
 		case 1:
+		  bar();
 		  age();
 		  pauseButton();
 		  scene();
 		  drawMain();
 		  break;
 		case 2:
+		  bar();
 		  age();
 		  pauseButton();
 		  scene();
@@ -96,6 +117,7 @@ function tick() {
 		  drawSchool();
 		  break;
 		case 3:
+		  bar();
 		  age();
 		  pauseButton();
 		  scene();
@@ -103,6 +125,7 @@ function tick() {
 		  drawCollege();
 		  break;
 		case 4:
+		  bar();
 		  age();
 		  pauseButton();
 		  scene();
@@ -110,29 +133,41 @@ function tick() {
 		  drawUniversity();
 		  break;
 		case 5:
+		  bar();
 		  age();
 		  pauseButton();
 		  scene();
 		  drawWork();
 		  break;
 		case 6:
+		  bar();
 		  age();
 		  pauseButton();
 		  scene();
+		  shade();
 		  drawMcRonalds();
 		  break;
 		case 7:
+		  bar();
 		  age();
 		  pauseButton();
 		  scene();
+		  shade();
 		  drawRetail();
 		  break;
 		case 8:
+		  bar();
 		  age();
 		  pauseButton();
 		  scene();
+		  shade();
 		  drawEngineering();
 		  break;
+		case 9:
+		  bar();
+		  scene();
+		  shade();
+		  drawGameOver();
 	}
 }
 
@@ -162,6 +197,8 @@ function drawPause() {
 		mClickX = '';
 		mClickY = '';
 	}
+	context.font = '15px Noto Sans';
+	context.fillText('Accumulate as much money and LifePoints as you can before you turn 30.', 200, 180);
 }
 
 function drawMain() {
@@ -249,13 +286,6 @@ function drawMain() {
 				mClickX = '';
 				mClickY = '';
 			}
-		}
-		else if (870 <= mClickX && mClickX <= 900 && 470 <= mClickY && mClickY <= 500) {
-			pLife += 5000000;
-			pMoney += 5000000;
-			pAge += 4;
-			mClickX = '';
-			mClickY = '';
 		}
 		else {
 			destX = mClickX;
@@ -412,6 +442,7 @@ function drawSchool() {
 			School.prob();
 		else {
 			pLife += 700 * (School.numCorrect / 10);
+			attSchool++;
 			state = 1;
 			destX = 530;
 			destY = 300;
@@ -569,6 +600,7 @@ function drawCollege() {
 		else {
 			pLife += 1400 * (College.numCorrect / 10);
 			pMoney -= 1000;
+			attCollege++;
 			state = 1;
 			destX = 530;
 			destY = 300;
@@ -736,6 +768,7 @@ function drawUniversity() {
 		else {
 			pLife += 2800 * (University.numCorrect / 10);
 			pMoney -= 15000;
+			attUniversity++;
 			state = 1;
 			destX = 530;
 			destY = 300;
@@ -1246,6 +1279,7 @@ function drawEngineering() {
 		if (Engineering.win == true) {
 			pMoney += 20000;
 			pLife += 1200;
+			gotEngineering = true;
 		}
 		mClickX = '';
 		mClickY = '';
@@ -1268,6 +1302,36 @@ function drawEngineering() {
 	context.strokeRect(200,100,500,300);
 }
 
+function drawGameOver() {
+	context.fillStyle = '#ffffff';
+	context.font = '150px Basic Title Font';
+	context.fillText('Game Over', 125, 200);
+	var scoreMultiplier = 1;
+	if (attSchool >= 4)
+		scoreMultiplier += 0.1;
+	if (attCollege >= 2)
+		scoreMultiplier += 0.1;
+	if (attUniversity >= 4)
+		scoreMultiplier += 0.2;
+	if (gotEngineering == true)
+		scoreMultiplier += 0.3;
+	context.font = '30px Basic Title Font';
+	context.fillText('Your Score= ' + Math.floor((pLife + pMoney) * scoreMultiplier), 135, 260);
+	context.fillStyle = '#539c05';
+	if (250 <= mPosX && mPosX <= 650 && 350 <= mPosY && mPosY <= 395)
+		context.fillStyle = '#bdbdbd';
+	context.fillRect(250, 350, 400, 45);
+	context.fillStyle = '#ffffff';
+	context.font = '30px Basic Title Font';
+	context.fillText('Play Again', 390, 383);
+	if (250 <= mClickX && mClickX <= 650 && 350 <= mClickY && mClickY <= 395) {
+		initialize();
+		state = prestate;
+		mClickX = '';
+		mClickY = '';
+	}
+}
+
 // Visual Elements
 function bar() {
 	// Draw bar
@@ -1278,10 +1342,12 @@ function bar() {
 	context.fillText('LifePoints= ' + pLife, 15, 24);
 	context.fillText('Money= @' + pMoney, 315, 24);
 	context.fillText('Age= ' + Math.floor(pAge), 615, 24);
-//	if (pMood)
-//		context.drawImage(happy, 820, 2);
-//	else
-//		context.drawImage(sad, 820, 2);
+	/*
+	if (pMood)
+		context.drawImage(happy, 820, 2);
+	else
+		context.drawImage(sad, 820, 2);
+	*/
 }
 function pauseButton() {
 	context.drawImage(pause, 860, 2);
@@ -1300,7 +1366,7 @@ function scene() {
 		case 0:
 		  context.fillStyle = context.createPattern(grass, 'repeat');
 		  context.fillRect(0, 35, 900, 465);
-		  context.drawImage(house, 400, 200);
+		  context.drawImage(house, 380, 200);
 		  context.drawImage(school, 20, 55);
 		  context.drawImage(college, 20, 175);
 		  context.drawImage(university, 20, 295);
@@ -1328,4 +1394,6 @@ function shade() {
 // Automation Tools
 function age() {
 	pAge += 1 / (pAgeRate * 25);
+	if (pAge > 30)
+		state = 9;
 }
