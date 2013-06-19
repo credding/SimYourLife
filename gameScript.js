@@ -36,8 +36,8 @@ happy.src = 'img/smile.png';
 sad.src = 'img/frown.png';
 pause.src = 'img/pause.png';
 house.src = 'img/house.png';
-school.src = 'img/school.png';
-college.src = 'img/college.png';
+school.src = 'img/school.new.png';
+college.src = 'img/college.new.png';
 university.src = 'img/university.png';
 work.src = 'img/work.png';
 mcronalds.src = 'img/mcronalds.png';
@@ -1174,7 +1174,7 @@ function drawRetail() {
 Engineering = new Object();
 
 function startEngineering() {
-	if (Math.floor(pAge) < 16 || pLife < 1500)
+	if (Math.floor(pAge) < 16 || pLife < 15000)
 		Engineering.canGo = false;
 	else {
 		Engineering.canGo = true;
