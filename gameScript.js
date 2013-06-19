@@ -10,7 +10,7 @@ canvas.addEventListener('click', function() {
 	mClickX = event.offsetX;
 	mClickY = event.offsetY;
 }, false);
-
+/*
 window.addEventListener('keydown', function() {
 	switch(event.keyCode) {
 		case 76:
@@ -24,7 +24,7 @@ window.addEventListener('keydown', function() {
 		  break;
 	}
 }, false);
-
+*/
 // Define Image Objects
 var grass = new Image();
 var tile = new Image();
@@ -592,7 +592,7 @@ function drawCollege() {
 		context.fillText('You must have 2100 LifePoints and $1000.', 220, 160);
 	}
 	else {
-		context.fillText('Complete 10 problems to receive up to 14000 LifePoints.', 220, 135);
+		context.fillText('Complete 10 problems to receive up to 1400 LifePoints.', 220, 135);
 		context.fillText('(Costs $1000)', 580, 313)
 		context.fillText('Correct: ' + College.numCorrect + ' / ' + College.numDone, 580, 338);
 		if (College.numDone < 10)
@@ -1121,7 +1121,7 @@ function startRetail() {
 
 	Retail.items = new Array();
 	Retail.items[1] = new Item('number 65', 165, 155, 195, 180);
-	Retail.items[2] = new Item('number 15', 365, 50, 425, 110);
+	Retail.items[2] = new Item('number 25', 365, 50, 425, 110);
 	Retail.items[3] = new Item('number 5', 120, 160, 145, 185);
 	Retail.items[4] = new Item('stingray', 75, 0, 115, 50);
 	Retail.items[5] = new Item('butterfly', 375, 115, 435, 170);
