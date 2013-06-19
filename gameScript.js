@@ -10,21 +10,34 @@ canvas.addEventListener('click', function() {
 	mClickX = event.offsetX;
 	mClickY = event.offsetY;
 }, false);
-/*
-window.addEventListener('keydown', function() {
-	switch(event.keyCode) {
-		case 76:
-		  pLife += 100;
-		  break;
-		case 77:
-		  pMoney += 1000;
-		  break;
-		case 65:
-		  pAge++;
-		  break;
+
+function getParam(sname) {
+	var params = location.search.substr(location.search.indexOf("?")+1);
+	var sval = "";
+	params = params.split("&");
+	// split param and value into individual pieces
+	for (var i=0; i<params.length; i++) {
+		temp = params[i].split("=");
+		if ( [temp[0]] == sname ) { sval = temp[1]; }
 	}
-}, false);
-*/
+	return sval;
+}
+if (getParam('cheat') == 'true') {
+	window.addEventListener('keydown', function() {
+		switch(event.keyCode) {
+			case 76:
+			  pLife += 100;
+			  break;
+			case 77:
+			  pMoney += 1000;
+			  break;
+			case 65:
+			  pAge++;
+			  break;
+		}
+	}, false);
+}
+
 // Define Image Objects
 var grass = new Image();
 var tile = new Image();
