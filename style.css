@@ -96,7 +96,18 @@ a:hover {
 	text-align: center;
 	background: #539c05;
 }
-#body .button:hover {
+#body .buttongrey {
+	margin: 0px auto;
+	padding: 5px 0px 10px;
+	width: 400px;
+	font-family: 'Basic Title Font', sans-serif;
+	font-size: 30px;
+	text-align: center;
+	color: #ffffff;
+	text-align: center;
+	background: #6d6d6d;
+}
+#body .button:hover, #body .buttongrey:hover {
 	background: #bdbdbd;
 	cursor: pointer;
 }
