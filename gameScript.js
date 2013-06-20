@@ -2,13 +2,13 @@ var canvas = document.getElementById('gameCanvas');
 var context = canvas.getContext('2d');
 
 window.addEventListener('mousemove', function(event) {
-	mPosX = event.layerX;
-	mPosY = event.layerY;
+	mPosX = event.offsetX || event.layerX;
+	mPosY = event.offsetY || event.layerY;
 }, false);
 
 window.addEventListener('click', function(event) {
-	mClickX = event.layerX;
-	mClickY = event.layerY;
+	mClickX = event.offsetX || event.layerX;
+	mClickY = event.offsetY || event.layerY;
 }, false);
 
 function getParam(sname) {
