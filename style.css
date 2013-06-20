@@ -125,6 +125,9 @@ a:hover {
 	background: #167291;
 	color: #ffffff;
 }
+canvas {
+	position: relative;
+}
 
 #foot {
 	margin: 0px;

@@ -1,14 +1,14 @@
 var canvas = document.getElementById('gameCanvas');
 var context = canvas.getContext('2d');
 
-canvas.addEventListener('mousemove', function(event) {
-	mPosX = event.offsetX;
-	mPosY = event.offsetY;
+window.addEventListener('mousemove', function(event) {
+	mPosX = event.layerX;
+	mPosY = event.layerY;
 }, false);
 
-canvas.addEventListener('click', function(event) {
-	mClickX = event.offsetX;
-	mClickY = event.offsetY;
+window.addEventListener('click', function(event) {
+	mClickX = event.layerX;
+	mClickY = event.layerY;
 }, false);
 
 function getParam(sname) {
@@ -42,8 +42,8 @@ if (getParam('cheat') == 'true') {
 var grass = new Image();
 var tile = new Image();
 var guy = new Image();
-var happy = new Image();
-var sad = new Image();
+//var happy = new Image();
+//var sad = new Image();
 var pause = new Image();
 var house = new Image();
 var school = new Image();
@@ -62,13 +62,13 @@ guy.src = 'img/guy.png';
 //happy.src = 'img/smile.png';
 //sad.src = 'img/frown.png';
 pause.src = 'img/pause.png';
-house.src = 'img/house.new.png';
-school.src = 'img/school.new.png';
-college.src = 'img/college.new.png';
-university.src = 'img/university.new.png';
-work.src = 'img/work.new.png';
+house.src = 'img/house.png';
+school.src = 'img/school.png';
+college.src = 'img/college.png';
+university.src = 'img/university.png';
+work.src = 'img/work.png';
 mcronalds.src = 'img/mcronalds.png';
-retail.src = 'img/salesperson.png';
+retail.src = 'img/retail.png';
 ispy.src = 'img/ispy.png';
 engineer.src = 'img/engineer.png';
 
